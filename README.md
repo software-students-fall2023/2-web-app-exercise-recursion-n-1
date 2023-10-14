@@ -4,7 +4,7 @@ A little exercise to build a web application following an agile development proc
 
 ## Product vision statement
 
-See instructions. Delete this line and place the Product Vision Statement here.
+To create a forum that allows users to join groups for volunteer activities.
 
 ## User stories
 
