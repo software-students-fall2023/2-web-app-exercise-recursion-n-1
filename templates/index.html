@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{%block content %}
+
+<div class="box">
+    <p id="tagline"> {{content}} Discover meaningful ways to make a difference in your community</p>
+   <br/>
+   <br/>
+   <br/>
+   <br/>
+   
+   <form action="/login" method="post">
+    <button class="btn"> log in </button>
+   </form>
+ <br/>
+
+    <form action="/login" method="post">
+        <button class="btn"> register</button>
+    </form>
+   
+</div>
+
+{% endblock %}
