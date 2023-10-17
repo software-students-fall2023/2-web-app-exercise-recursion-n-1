@@ -15,7 +15,18 @@ if ( os.getenv('FLASK_ENV','development') == 'development'):
 
 @app.route('/')
 def home():
-    one = db.users.find_one({"name": "lemon"})
-    return render_template('index.html', content="Hello",user=one)
+   
+    return render_template('index.html', content="Greetings!")
+
+@app.route('/login', methods=['POST'])
+def login():
+    return render_template('login.html')
+
+@app.route('/register', methods=['POST'])
+def register():
+    return render_template('register.html')
+
+
+
 
 

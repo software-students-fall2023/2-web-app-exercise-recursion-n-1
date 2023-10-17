@@ -1,18 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Your Web Page Title</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}"
-    />
-</head>
-<body>
-    <h1>First Page</h1>
-    <div> 
-        {{content}},{{user.name}}
-    </div>
-    <button>Click Me</button>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{%block content %}
+
+<div class="box">
+    <p id="tagline"> {{content}} Discover meaningful ways to make a difference in your community</p>
+   <br/>
+   <br/>
+   <br/>
+   <br/>
+   
+   <form action="/login" method="post">
+    <button class="btn"> log in </button>
+   </form>
+ <br/>
+
+    <form action="/login" method="post">
+        <button class="btn"> register</button>
+    </form>
+   
+</div>
+
+{% endblock %}
