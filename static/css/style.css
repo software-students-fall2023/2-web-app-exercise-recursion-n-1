@@ -22,16 +22,13 @@ body{
 
  }
 
-
-
  header {
   display: flex;
   flex-direction: row;
   justify-content: center; /* align along the flex direction */
   align-items: center; /* align across the flex direction */
-  
+  position: fixed;
 }
-
 
 .btn{
   background-color: #4CAF50; /* Green */
@@ -67,3 +64,4 @@ a:hover {
 a:active {
   text-decoration: none;
 }
+
