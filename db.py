@@ -22,6 +22,7 @@ except Exception as e:
     print(e)
 
 #test database
+"""
 doc = {
     "name":"lemon",
     "email":"lemon@gmail.com",
@@ -32,6 +33,10 @@ doc = {
 db.users.insert_one(doc)
 doc1= db.users.find_one({"name": "lemon"})
 print(doc1["email"])
+"""
+
+#db.users.delete_many({"name":"lemon"})
+
 
 
 

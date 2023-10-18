@@ -76,6 +76,69 @@ def add_event():
      return render_template('add_event.html')
 
 
+@app.route('/profile')
+def show_profile(): 
+
+    user = db.users.find_one({"_id": ObjectId('653026f20bb6132fd8dc0890')}) # TODO : NEED TO RETRIEVE CURRENT USER FROM SESSION
+  
+    #myEvts = db.event.find_one({"_id": ObjectId("652f5cb3e3782d2a799feb73")}) #temp data 
+    #myPosting = db.event.find({}) #temp data
+
+    for event in user['myEvents']:
+        event_id = event['id']
+        event_details = db.event.find_one({"_id": ObjectId(event_id)})
+        event.update(event_details)
+    
+    for event in user["myPostings"]:
+        event_id = event['id']
+        event_details = db.event.find_one({"_id":ObjectId(event_id)})
+        event.update(event_details)
+  
+
+    
+    return render_template('profile.html', user=user)
+
+
+@app.route('/edit_user_info/<user_id>', methods=['GET', 'POST', 'PUT'])
+def editUser(user_id):
+    pass
+    user = db.users.find_one({"_id": ObjectId('653026f20bb6132fd8dc0890')}) # TODO : NEED TO RETRIEVE CURRENT USER FROM SESSION
+
+    if request.method == 'POST' or request.method == 'PUT' :
+        pass
+
+
+
+    return render_template('edit_user.html', user=user)
+
+
+
+
+######
+#TO BE DELETED AFTER !! THIS IS FOR THE PURPOSE OF CREATING USER DATA
+#SOME  DATA HERE IS HARD CODED
+@app.route('/add_user',methods=['POST'])
+def createUser():
+   
+
+    doc = {
+        "name" : "sky1",
+        "email" : "sky1@gmail.com",
+        "password" : "1234",
+        "myEvents": [
+            {"id": ObjectId("652f5ec73c5916795f01da0f")},
+            {"id": ObjectId('652f5cb3e3782d2a799feb73')}
+        ],      
+        "myPostings":[ {"id": ObjectId('652f5cb3e3782d2a799feb73')}]
+       
+    }
+
+    db.users.insert_one(doc)
+
+    return doc
+
+
+
 
 
 if __name__ == "__main__":
