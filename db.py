@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 from bson.objectid import ObjectId
 import certifi
 
-
 # load credentials and configuration options from .env file
 load_dotenv()
 
@@ -23,7 +22,6 @@ except Exception as e:
     print(e)
 
 #test database
-"""
 doc = {
     "name":"lemon",
     "email":"lemon@gmail.com",
@@ -34,9 +32,6 @@ doc = {
 db.users.insert_one(doc)
 doc1= db.users.find_one({"name": "lemon"})
 print(doc1["email"])
-"""
-
-
 
 
 
