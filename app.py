@@ -78,10 +78,5 @@ def add_event():
 
 
 
-if __name__ == "__main__":
-    PORT = os.getenv('PORT', 8000)
-    app.run(host='0.0.0.0', port=PORT)
-
-
 
  
