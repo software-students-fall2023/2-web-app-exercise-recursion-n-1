@@ -31,7 +31,7 @@ def register():
 @app.route('/profile')
 def show_profile(): 
 
-    user = db.users.find_one({"_id": ObjectId('652f7b647ceddb5eeac63b77')}) # TODO : NEED TO RETRIEVE CURRENT USER FROM SESSION
+    user = db.users.find_one({"_id": ObjectId('652f83cbc1b7baddc672e121')}) # TODO : NEED TO RETRIEVE CURRENT USER FROM SESSION
   
     #myEvts = db.event.find_one({"_id": ObjectId("652f5cb3e3782d2a799feb73")}) #temp data 
     #myPosting = db.event.find({}) #temp data
@@ -39,6 +39,11 @@ def show_profile():
     for event in user['myEvents']:
         event_id = event['id']
         event_details = db.event.find_one({"_id": ObjectId(event_id)})
+        event.update(event_details)
+    
+    for event in user["myPostings"]:
+        event_id = event['id']
+        event_details = db.event.find_one({"_id":ObjectId(event_id)})
         event.update(event_details)
   
 
@@ -95,7 +100,8 @@ def createUser():
         "myEvents": [
             {"id": ObjectId("652f5ec73c5916795f01da0f")},
             {"id": ObjectId('652f5cb3e3782d2a799feb73')}
-        ],       "myPostings":[]
+        ],      
+        "myPostings":[ {"id": ObjectId('652f5cb3e3782d2a799feb73')}]
        
     }
 

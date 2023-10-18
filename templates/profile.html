@@ -55,20 +55,25 @@
         <button class="editBtn">edit</button>
         <button class="deleteBtn">delete</button>
     </div>
+
+    {% for event in user.myPostings %}
     <div id="personalInfo">
        
         <div class="fields">
+           <h3>{{event.eventName}}</h3>
+           <p>Organizer: {{event.organizer}}</p>
+           <p>When : {{event.date}}</p>
+           <p> Time : {{event.time}}</p>
+           <p>Location:{{event.location}}</p>
+           <p>Point of Contact: {{event.pointOfContact}}</p>
+           <p>Description: {{event.description}}</p>
            
-            <h2>event.eventName </h2>
-            <p>Organizer: event.user.username</p>
-            <p>When : event.date & time[need to do string manipulation]</p>
-            <p>Point of Contact: event.user.email</p>
-            <p>Event location: event.location</p>
-            <p>Event Description: event.description</p>
-            <p>event.numOfPpl registered</p>
         </div>
 
+       
+       
     </div>
+    {% endfor %}
 
     
    
