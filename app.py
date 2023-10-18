@@ -55,6 +55,7 @@ def processLogin():
     else:
     #Success -> log the user in with their account & add COOKIE
         print("success")
+        return render_template('events.html')
 
     return render_template('login.html')
 
@@ -135,13 +136,6 @@ def add_event():
         return redirect(url_for('event'))
      
      return render_template('add_event.html')
-
-
-
-
-if __name__ == "__main__":
-    PORT = os.getenv('PORT', 8000)
-    app.run(host='0.0.0.0', port=PORT)
 
 
 
