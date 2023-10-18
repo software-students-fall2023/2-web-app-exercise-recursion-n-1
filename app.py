@@ -18,15 +18,46 @@ def home():
    
     return render_template('index.html', content="Greetings!")
 
+# GET REQUESTS FOR LOG IN AND REGISTER
+
+@app.route('/login', methods=['GET'])
+def loginForm():
+    return render_template('login.html')
+
+@app.route('/register', methods=['GET'])
+def registerForm():
+    return render_template('register.html')
+
+# POST REQUESTS FOR LOGIN AND REGISTER
+
 @app.route('/login', methods=['POST'])
-def login():
+def processLogin():
+
+    #Get the user data from form
+    email = request.form['email']
+    password = request.form['password']
+
+    #Try to log the user in
+
+    #Success -> log the user in with their account
+
+    #Fail -> forward the user to back to the log in page & notify of failure
+
     return render_template('login.html')
 
 @app.route('/register', methods=['POST'])
-def register():
+def processRegistration():
+
+    #Get the user data from form
+    email = request.form['email']
+    username = request.form['username']
+    password = request.form['password']
+    confirmPassword = request.form['confirmPassword']
+
+
+    #Create an account in the database
+
+    #Log the user in with their created account
+
     return render_template('register.html')
-
-
-
-
 
