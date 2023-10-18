@@ -16,13 +16,75 @@ if ( os.getenv('FLASK_ENV','development') == 'development'):
 def home():
     return render_template('index.html', content="Greetings!")
 
+# GET REQUESTS FOR LOG IN AND REGISTER
+
+@app.route('/login', methods=['GET'])
+def loginForm():
+    return render_template('login.html')
+
+@app.route('/register', methods=['GET'])
+def registerForm():
+    return render_template('register.html')
+
+# POST REQUESTS FOR LOGIN AND REGISTER
+
 @app.route('/login', methods=['POST'])
-def login():
+def processLogin():
+
+    #Get the user data from form
+    email = request.form['email']
+    password = request.form['password']
+
+    #TODO: Try to log user in by matching username and password
+    getUser = db.users.find_one({'email': email})
+    
+    match = True
+    if(getUser == None): 
+        match = False
+    
+    if match == False: 
+
+        # Fail user not found
+        print("no documents found")
+
+    elif(getUser["password"] != password): 
+        
+        # Fail passwords do not match
+        print("Password Incorrect")
+
+    else:
+    #Success -> log the user in with their account & add COOKIE
+        print("success")
+
     return render_template('login.html')
 
 @app.route('/register', methods=['POST'])
-def register():
+def processRegistration():
+
+    #Get the user data from form
+    email = request.form['email']
+    username = request.form['username']
+    password = request.form['password']
+    confirmPassword = request.form['confirmPassword']
+
+
+    #TODO: check for unique username/email? 
+
+    #TODO: Check that passwords match -> if not route back to register with message
+    
+    #Create an account in the database
+    newAccount = {
+        'email' : email, 
+        'username' : username, 
+        'password' : password
+    }
+
+    db.users.insert_one(newAccount)
+    
+    #TODO: Log the user in with their created account & add COOKIE
+
     return render_template('register.html')
+
 
 @app.route('/events', methods=['GET', 'POST'])
 def event():
