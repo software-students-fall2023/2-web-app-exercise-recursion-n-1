@@ -55,8 +55,8 @@ def processLogin():
     else:
     #Success -> log the user in with their account & add COOKIE
         print("success")
-        return render_template('events.html')
-
+        return redirect(url_for('event'))
+    
     return render_template('login.html')
 
 @app.route('/register', methods=['POST'])
