@@ -9,7 +9,6 @@ from db import db
 import datetime
 from bson.dbref import DBRef
 
-
 app = Flask(__name__)
 
 if ( os.getenv('FLASK_ENV','development') == 'development'):
@@ -31,11 +30,8 @@ def register():
 @app.route('/profile')
 def show_profile(): 
 
-    user = db.users.find_one({"_id": ObjectId('652f83cbc1b7baddc672e121')}) # TODO : NEED TO RETRIEVE CURRENT USER FROM SESSION
-  
-    #myEvts = db.event.find_one({"_id": ObjectId("652f5cb3e3782d2a799feb73")}) #temp data 
-    #myPosting = db.event.find({}) #temp data
-
+    user = db.users.find_one({"_id": ObjectId('6530111c47e62dac09f8fce4')}) # TODO : NEED TO RETRIEVE CURRENT USER FROM SESSION
+   
     for event in user['myEvents']:
         event_id = event['id']
         event_details = db.event.find_one({"_id": ObjectId(event_id)})
@@ -87,6 +83,26 @@ def add_event():
 
 
 
+
+###### EDIT BUTTONS
+## EDIT PERSONAL INFO
+@app.route('/edit_user_info/<user_id>', methods=['GET', 'POST', 'PUT'])
+def editUser(user_id):
+    pass
+    user = db.users.find_one({"_id": ObjectId('6530111c47e62dac09f8fce4')}) # TODO : NEED TO RETRIEVE CURRENT USER FROM SESSION
+
+    if request.method == 'POST' or request.method == 'PUT' :
+        pass
+
+
+    
+    return render_template('edit_user.html', user=user)
+
+
+
+## delete my rsvped EVENT
+## EDIT my posting
+
 #TO BE DELETED AFTER !! THIS IS FOR THE PURPOSE OF CREATING USER DATA
 #SOME  DATA HERE IS HARD CODED
 @app.route('/add_user',methods=['POST'])
@@ -117,6 +133,27 @@ if __name__ == "__main__":
     app.run(host='0.0.0.0', port=PORT)
 
 
+"""
+ name = request.form.get("name")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        print(name)
 
+        doc = {
+            "name":name,
+            "email":email,
+            "password":password
+        }
+
+        db.users.update_one(
+            {"_id": ObjectId(user_id)},
+            {"$set": doc}
+        )
+
+return redirect(url_for('show_profile'))
+
+ """
+
+ 
 
  

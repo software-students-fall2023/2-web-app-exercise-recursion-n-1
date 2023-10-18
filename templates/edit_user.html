@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{%block content %}
+
+<div class="editting">
+<form method="PUT"action="{{url_for('editUser',user_id = user._id)}}">
+    <label for="fname"> name:</label><br>
+    <input type="text" id="fname"  value="name"><br>
+
+    <label for="femail">email</label><br>
+    <input type="email" id="femail" value="email"><br><br>
+
+    <label for="password">password</label><br>
+    <input type="text" id="fpassword" value="password"><br><br>
+
+    <input type="submit" value="Submit">
+  </form> 
+</div>
+
+{% endblock %}
