@@ -27,7 +27,6 @@ body{
   flex-direction: row;
   justify-content: center; /* align along the flex direction */
   align-items: center; /* align across the flex direction */
-  position: fixed;
 }
 
 .btn{

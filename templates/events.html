@@ -3,25 +3,22 @@
 {%block content %}
 
 <h2>Events</h2>
+
+<form action="{{ url_for('add_event') }}" method="get">
+    <button class="btn">Post Event</button>
+</form>
     <section class="event">
         {% for doc in docs %}
         <article class="event">
             <nav class="controls">
-
             </nav>
-            <p class="author">
-                {{doc.name}} at {{ doc.created_at.strftime("%H:%M on %d %B %Y") }}
-            </p>
-            <p class="location">
-                {{ doc.location }}
-            </p>
-            <p class="description">
-                {{ doc.description }}
-            </p>
-            <p class="numOfPpl">
-                {{ doc.numOfPpl }}
-            </p>
-            </p>
+            <p class="event-name">Event: {{ doc.eventName }}</p>
+            <p class="author">Organizer: {{ doc.organizer }}</p>
+            <p class="when">When: {{ doc.date }} at {{ doc.time }}</p>
+            <p class="contact">Contact: {{ doc.pointOfContact }}</p>
+            <p class="location">Location: {{ doc.location }}</p>
+            <p class="description">Description: {{ doc.description }}</p>
+            <p class="numOfPpl">Attendees: {{ doc.numOfPpl }}</p>
         </article>
         {%endfor%}
 
