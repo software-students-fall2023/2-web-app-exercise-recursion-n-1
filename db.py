@@ -36,6 +36,8 @@ print(doc1["email"])
 """
 
 #db.users.delete_many({"name":"lemon"})
+lemon_filter = {"name" : "lemon"}
+db.users.delete_many(lemon_filter)
 
 
 
