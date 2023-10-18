@@ -7,12 +7,23 @@
 <form action="{{ url_for('add_event') }}" method="get">
     <button class="btn">Post Event</button>
 </form>
+<form action="{{ url_for('event') }}" method="post">
+    <input type="text" name="search_query" placeholder="Search...">
+    <select name="search_option">
+        <option value="" disabled selected>Option</option>
+        <option value="event_name">Event Name</option>
+        <option value="organizer">Organizer</option>
+        <option value="location">Location</option>
+        <option value="Description">Description</option>
+        <option value="date">Date</option>
+    </select>
+    <button type="submit" class="btn">Search</button>
+</form>  
     <section class="event">
         {% for doc in docs %}
         <article class="event">
             <nav class="controls">
             </nav>
-            <p>{{doc._id}}</p>
             <p class="event-name">Event: {{ doc.eventName }}</p>
             <p class="author">Organizer: {{ doc.organizer }}</p>
             <p class="when">When: {{ doc.date }} at {{ doc.time }}</p>
