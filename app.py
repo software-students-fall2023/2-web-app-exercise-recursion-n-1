@@ -42,7 +42,6 @@ def event():
         elif search_option == "date":
             query = {'date': {'$regex': search_query, '$options': 'i'}}
         docs = db['event'].find(query).sort("created_at", -1)
-
     else:
         docs = db['event'].find({}).sort("created_at", -1)
     return render_template('events.html', docs=docs)
@@ -74,8 +73,6 @@ def add_event():
         return redirect(url_for('event'))
      
      return render_template('add_event.html')
-
-
 
 
 
