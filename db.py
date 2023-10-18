@@ -5,16 +5,15 @@ import os
 import dotenv
 from dotenv import load_dotenv
 from bson.objectid import ObjectId
+import certifi
 
 
 # load credentials and configuration options from .env file
 load_dotenv()
 
-
-
-
 # Create a new client and connect to the server
-client = MongoClient(os.getenv('MONGO_URI') , serverSelectionTimeoutMS=5000)
+client = MongoClient(os.getenv('MONGO_URI'), serverSelectionTimeoutMS=5000, tlsCAFile=certifi.where())
+
 # Send a ping to confirm a successful connection
 try:
     client.admin.command('ping')
@@ -22,7 +21,6 @@ try:
     print("Pinged your deployment. You successfully connected to MongoDB!")
 except Exception as e:
     print(e)
-
 
 #test database
 """
@@ -37,6 +35,7 @@ db.users.insert_one(doc)
 doc1= db.users.find_one({"name": "lemon"})
 print(doc1["email"])
 """
+
 
 
 

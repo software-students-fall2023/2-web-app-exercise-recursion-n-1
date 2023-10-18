@@ -21,6 +21,7 @@
             <p><strong>email</strong> : {{user.email}}</p>
             <p><strong>username</strong>: {{user.name}}</p>
             <p><strong>password</strong>: {{user.password}}</p>
+           
         </div>
 
     </div>
@@ -30,20 +31,24 @@
         <button class="deleteBtn">delete</button>
     </div>
    
+    {% for event in user.myEvents %}
     <div id="personalInfo">
        
         <div class="fields">
-          
+           <h3>{{event.eventName}}</h3>
+           <p>Organizer: {{event.organizer}}</p>
+           <p>When : {{event.date}}</p>
+           <p> Time : {{event.time}}</p>
+           <p>Location:{{event.location}}</p>
+           <p>Point of Contact: {{event.pointOfContact}}</p>
+           <p>Description: {{event.description}}</p>
            
         </div>
+
        
        
-      
-
-      
-
     </div>
- 
+    {% endfor %}
 
     <div class="labels">
         <h3>My Postings</h3>
