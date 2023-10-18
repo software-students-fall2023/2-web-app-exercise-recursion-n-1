@@ -55,6 +55,7 @@ def processLogin():
     else:
     #Success -> log the user in with their account & add COOKIE
         print("success")
+        return render_template('events.html')
 
     return render_template('login.html')
 
@@ -104,7 +105,6 @@ def event():
         elif search_option == "date":
             query = {'date': {'$regex': search_query, '$options': 'i'}}
         docs = db['event'].find(query).sort("created_at", -1)
-
     else:
         docs = db['event'].find({}).sort("created_at", -1)
     return render_template('events.html', docs=docs)
@@ -136,13 +136,6 @@ def add_event():
         return redirect(url_for('event'))
      
      return render_template('add_event.html')
-
-
-
-
-if __name__ == "__main__":
-    PORT = os.getenv('PORT', 8000)
-    app.run(host='0.0.0.0', port=PORT)
 
 
 
