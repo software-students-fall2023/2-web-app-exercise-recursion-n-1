@@ -38,10 +38,26 @@ def processLogin():
     password = request.form['password']
 
     #TODO: Try to log user in by matching username and password
+    getUser = db.users.find_one({'email': "testing"})
+    
+    match = True;
+    if(getUser == None): 
+        match = False
+    
 
-    #TODO: Success -> log the user in with their account & add COOKIE
+    if match == false: 
 
-    #TODO: Fail -> forward the user to back to the log in page & notify of failure
+        # Fail user not found
+        print("no documents found")
+
+    elif(getUser.password != password): 
+        
+        # Fail passwords do not match
+        print("no documents found")
+
+    else:
+    #Success -> log the user in with their account & add COOKIE
+        print("success")
 
     return render_template('login.html')
 
