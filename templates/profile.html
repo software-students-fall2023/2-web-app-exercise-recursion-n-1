@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{%block content %}
+
+<div id="profilePic">
+    <img src="https://cdn2.iconfinder.com/data/icons/instagram-outline/19/11-512.png" alt="user1" class="avatar">
+    <figcaption>@{{user.name}}</figcaption>
+</div>
+
+<div class="box">
+  
+
+    <div class="labels">
+        <h3>Perosnal Info</h3>
+        <button class="editBtn">edit</button>
+    </div>
+    <div id="personalInfo">
+       
+        <div class="fields">
+           
+            <p><strong>email</strong> : {{user.email}}</p>
+            <p><strong>username</strong>: {{user.name}}</p>
+            <p><strong>password</strong>: {{user.password}}</p>
+        </div>
+
+    </div>
+
+    <div class="labels">
+        <h3>My RSVPed Volunteer Events</h3>
+        <button class="deleteBtn">delete</button>
+    </div>
+   
+    <div id="personalInfo">
+       
+        <div class="fields">
+          
+           
+        </div>
+       
+       
+      
+
+      
+
+    </div>
+ 
+
+    <div class="labels">
+        <h3>My Postings</h3>
+        <button class="editBtn">edit</button>
+        <button class="deleteBtn">delete</button>
+    </div>
+    <div id="personalInfo">
+       
+        <div class="fields">
+           
+            <h2>event.eventName </h2>
+            <p>Organizer: event.user.username</p>
+            <p>When : event.date & time[need to do string manipulation]</p>
+            <p>Point of Contact: event.user.email</p>
+            <p>Event location: event.location</p>
+            <p>Event Description: event.description</p>
+            <p>event.numOfPpl registered</p>
+        </div>
+
+    </div>
+
+    
+   
+</div>
+
+
+{% endblock %}

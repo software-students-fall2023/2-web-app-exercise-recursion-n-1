@@ -10,15 +10,17 @@ body{
  
  .container{
   border: 2px solid;
-  max-height: 500px;
+  max-height: 100vh;
+  width:auto;
   margin: 0 auto;
   text-align: center;
-  
+  overflow: scroll;
  }
 
  .box{
-  /* border:2px solid; */
+  
   padding:100px;
+  row-gap: 100px;
 
  }
 
@@ -67,3 +69,42 @@ a:hover {
 a:active {
   text-decoration: none;
 }
+
+.avatar {
+  border: 1px solid pink;
+  vertical-align: middle;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+
+#personalInfo{
+  border:1px solid black;
+  max-width: 100%;
+  padding:50px;
+
+}
+
+.editBtn{
+  margin-top: 10px;
+  height: 30px;
+  width:50px;
+}
+
+.deleteBtn{
+  margin-top: 10px;
+  height: 30px;
+  width:50px;
+}
+
+.labels{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#profilePic{
+  /* border:2px solid red; */
+  margin-bottom: 20px;;
+}
+
