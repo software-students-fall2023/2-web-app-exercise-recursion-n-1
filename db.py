@@ -11,8 +11,6 @@ from bson.objectid import ObjectId
 load_dotenv()
 
 
-
-
 # Create a new client and connect to the server
 client = MongoClient(os.getenv('MONGO_URI') , serverSelectionTimeoutMS=5000)
 # Send a ping to confirm a successful connection

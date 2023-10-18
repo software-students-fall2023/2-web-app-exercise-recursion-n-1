@@ -38,22 +38,21 @@ def processLogin():
     password = request.form['password']
 
     #TODO: Try to log user in by matching username and password
-    getUser = db.users.find_one({'email': "testing"})
+    getUser = db.users.find_one({'email': email})
     
     match = True;
     if(getUser == None): 
         match = False
     
-
     if match == False: 
 
         # Fail user not found
         print("no documents found")
 
-    elif(getUser.password != password): 
+    elif(getUser["password"] != password): 
         
         # Fail passwords do not match
-        print("no documents found")
+        print("Password Incorrect")
 
     else:
     #Success -> log the user in with their account & add COOKIE
@@ -87,3 +86,7 @@ def processRegistration():
     #TODO: Log the user in with their created account & add COOKIE
 
     return render_template('register.html')
+
+if __name__ == "__main__":
+    PORT = os.getenv('PORT', 8001)
+    app.run(host='0.0.0.0', port=PORT)
