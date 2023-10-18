@@ -37,11 +37,11 @@ def processLogin():
     email = request.form['email']
     password = request.form['password']
 
-    #Try to log the user in
+    #TODO: Try to log user in by matching username and password
 
-    #Success -> log the user in with their account
+    #TODO: Success -> log the user in with their account & add COOKIE
 
-    #Fail -> forward the user to back to the log in page & notify of failure
+    #TODO: Fail -> forward the user to back to the log in page & notify of failure
 
     return render_template('login.html')
 
@@ -55,9 +55,19 @@ def processRegistration():
     confirmPassword = request.form['confirmPassword']
 
 
-    #Create an account in the database
+    #TODO: check for unique username/email? 
 
-    #Log the user in with their created account
+    #TODO: Check that passwords match -> if not route back to register with message
+    
+    #Create an account in the database
+    newAccount = {
+        'email' : email, 
+        'username' : username, 
+        'password' : password
+    }
+
+    db.users.insert_one(newAccount)
+    
+    #TODO: Log the user in with their created account & add COOKIE
 
     return render_template('register.html')
-
