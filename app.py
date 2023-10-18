@@ -45,7 +45,7 @@ def processLogin():
         match = False
     
 
-    if match == false: 
+    if match == False: 
 
         # Fail user not found
         print("no documents found")
