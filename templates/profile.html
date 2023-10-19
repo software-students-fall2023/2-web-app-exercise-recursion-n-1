@@ -12,7 +12,7 @@
 
     <div class="labels">
         <h3>Perosnal Info</h3>
-        <form action="{{ url_for('editUser',user_id=user._id)}}" method="PUT">
+        <form action="{{ url_for('editUser',user_id=user._id)}}" method="GET">
           <button class="editBtn">edit</button>
         </form>
     </div>
@@ -30,9 +30,11 @@
 
     <div class="labels">
         <h3>My RSVPed Volunteer Events</h3>
-       
     </div>
    
+    {% if user.myEvents|length == 0  %}
+        <p> You have not saved any events! Go browse events and help out the community!</p>
+    {% else %}
     {% for event in user.myEvents %}
     <div id="personalInfo">
        
@@ -46,16 +48,26 @@
            <p>Description: {{event.description}}</p>
            
         </div>
-        <button class="deleteBtn">delete</button>
+        <form  action ="{{url_for('delete',user_id=user._id,event_id=event._id)}}">       
+            <button class="deleteBtn">delete</button>
+        </form>
+
 
     
     </div>
     {% endfor %}
+    {% endif %}
 
     <div class="labels">
         <h3>My Postings</h3>
         
     </div>
+
+    {% if user.myPostings|length == 0  %}
+
+     <p> Have a Volunteer opportunitiy you'd like to share? Add an event!</p>
+
+    {% else %}
 
     {% for event in user.myPostings %}
     <div id="personalInfo">
@@ -68,15 +80,23 @@
            <p>Location:{{event.location}}</p>
            <p>Point of Contact: {{event.pointOfContact}}</p>
            <p>Description: {{event.description}}</p>
+           <p>Number of RSVPs: {{event.numOfPpl}}</p>
            
         </div>
+        <form method="GET" action="{{url_for('editPosting',post_id=event._id)}}">
         <button class="editBtn">edit</button>
+        </form>
+
+        <form action ="{{url_for('delete',user_id=user._id,event_id=event._id)}}">       
         <button class="deleteBtn">delete</button>
+        </form>
 
        
        
     </div>
     {% endfor %}
+
+    {% endif %}
 
     
    
