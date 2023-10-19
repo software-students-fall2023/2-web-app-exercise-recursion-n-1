@@ -148,21 +148,52 @@ def add_event():
 @app.route("/profile")
 def show_profile():
     user = db.users.find_one(
-        {"_id": ObjectId("653026f20bb6132fd8dc0890")}
+        {"_id": ObjectId("65307d907df3c2159ee8db6c")}
     )  # TODO : NEED TO RETRIEVE CURRENT USER FROM SESSION
 
     # myEvts = db.event.find_one({"_id": ObjectId("652f5cb3e3782d2a799feb73")}) #temp data
     # myPosting = db.event.find({}) #temp data
 
+    myPostings = user["myPostings"]
+    myEvents = user["myEvents"]
+
+    print("MY POSTINGS",myPostings)
     for event in user["myEvents"]:
-        event_id = event["id"]
-        event_details = db.event.find_one({"_id": ObjectId(event_id)})
-        event.update(event_details)
+        if(event is not None):
+            print(event)
+            event_id = event["id"]
+            event_details = db.event.find_one({"_id": ObjectId(event_id)})
+            if(event_details is not None):
+                event.update(event_details)
+            else:
+                myEvents = [event for event in myEvents if event.get("id") != ObjectId(event_id)]
+                print("After",myEvents)
+                update = {
+                    "$set": {
+                        "myEvents" : myEvents
+                    }
+                }
+                db.users.update_one( {"_id": ObjectId("65307d907df3c2159ee8db6c")}, update)
+
 
     for event in user["myPostings"]:
-        event_id = event["id"]
-        event_details = db.event.find_one({"_id": ObjectId(event_id)})
-        event.update(event_details)
+        print("EVENT HERE", event)
+        if(event is not None):
+            event_id = event["id"]
+            event_details = db.event.find_one({"_id": ObjectId(event_id)})
+            print("EVENT DETAILS", event_details)
+            if(event_details is not None):
+                event.update(event_details)
+            else:
+                myPostings = [event for event in myPostings if event.get("id") != ObjectId(event_id)]
+                updatePostings = {
+                    "$set": {
+                       "myPostings" : myPostings
+                }
+            }
+            db.users.update_one({"_id": ObjectId("65307d907df3c2159ee8db6c")}, updatePostings)
+
+            print("THERE IS NOTHING HERE: DELETE FROM ARRAY")
 
     return render_template("profile.html", user=user)
 
@@ -170,19 +201,19 @@ def show_profile():
 @app.route("/edit_user_info/<user_id>", methods=["GET", "POST", "PUT"])
 def editUser(user_id):
     user = db.users.find_one(
-        {"_id": ObjectId("653026f20bb6132fd8dc0890")}
+        {"_id": ObjectId("65307d907df3c2159ee8db6c")}
     )  # TODO : NEED TO RETRIEVE CURRENT USER FROM SESSION
 
     if request.method == "POST" or request.method == "PUT":
         name = request.form.get("fname")
         email = request.form.get("femail")
         password = request.form.get("fpassword")
-        print("helloooo")
-        print(name, " ", email, " ", password)
-        print(user.get("_id"))
+        #print("helloooo")
+        #print(name, " ", email, " ", password)
+        #print(user.get("_id"))
         #print("sec", user)
         myquery = {"_id":ObjectId(user.get("_id"))}
-        print("before doc")
+        #print("before doc")
         doc = {
 
             "$set":
@@ -192,16 +223,78 @@ def editUser(user_id):
                 "password": password
                }
                 
-            
         }
 
-        print(doc)
-        # db.users.update_one()
+        #print(doc)
         db.users.update_one(myquery,doc)
 
         return redirect(url_for("show_profile"))
 
     return render_template("edit_user.html", user=user)
+
+
+
+@app.route('/delete/<user_id>/<event_id>')
+def delete(user_id, event_id):
+    
+    #db.event.delete_one({"_id":ObjectId(event_id)}) #delete this event from data base: do so only if in myPostings!
+   
+    #we also need to update user object and remove this from event array
+    user = db.users.find_one({"_id":ObjectId(user_id)})
+    myEvents = user["myEvents"] #myEvents array
+    myPostings = user["myPostings"] #myPosting array
+
+    #print("NEW PRINTS!")
+    
+    print("BEFORE: MY EVENTS",myEvents)
+    
+    #print(myPostings)
+
+    #my events -> remove from list ONLY
+   
+    myEvents = [event for event in myEvents if event.get("id") != ObjectId(event_id)]
+    print("After",myEvents)
+    update = {
+        "$set": {
+            "myEvents" : myEvents
+        }
+
+    }
+
+    db.users.update_one({"_id":ObjectId(user_id)}, update)
+    #user["myEvents"] = myEvents
+    print("USER UPDATE", user)
+    
+    #print("FOUND NONE FROM MY EVENT")
+
+    #my posting-> remove from list AND database
+
+    obj = False # a flag that indicates whether or not we need to delete from database
+    for i in range(len(myPostings)):
+        if(myPostings[i]['id'] == ObjectId(event_id)):
+          obj = True
+          break
+
+    # remove from array
+    myPostings = [event for event in myPostings if event.get("id") != ObjectId(event_id)]
+
+    
+    updatePostings = {
+        "$set": {
+            "myPostings" : myPostings
+        }
+    }
+
+    db.users.update_one({"_id":ObjectId(user_id)}, updatePostings)
+
+    # remove from database
+    if(obj == True):
+        db.event.delete_one({"_id":ObjectId(event_id)})
+
+    
+
+
+    return redirect(url_for('show_profile'))
 
 
 ######
@@ -210,14 +303,16 @@ def editUser(user_id):
 @app.route("/add_user", methods=["POST"])
 def createUser():
     doc = {
-        "name": "sky1",
-        "email": "sky1@gmail.com",
-        "password": "1234",
+        "name": "mark",
+        "email": "mark@gmail.com",
+        "password": "living&waters",
         "myEvents": [
             {"id": ObjectId("652f5ec73c5916795f01da0f")},
             {"id": ObjectId("652f5cb3e3782d2a799feb73")},
+            {"id": ObjectId('65302f3644232125a2620ad5')}
         ],
-        "myPostings": [{"id": ObjectId("652f5cb3e3782d2a799feb73")}],
+        "myPostings": [
+            {"id": ObjectId("652f56bdbeaaa7a76dfa8c52")}],
     }
 
     db.users.insert_one(doc)
