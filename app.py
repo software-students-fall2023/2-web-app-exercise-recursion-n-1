@@ -148,7 +148,7 @@ def add_event():
 @app.route("/profile")
 def show_profile():
     user = db.users.find_one(
-        {"_id": ObjectId("65307d907df3c2159ee8db6c")}
+        {"_id": ObjectId("653098f24157aaba77523ac0")}
     )  # TODO : NEED TO RETRIEVE CURRENT USER FROM SESSION
 
     # myEvts = db.event.find_one({"_id": ObjectId("652f5cb3e3782d2a799feb73")}) #temp data
@@ -173,7 +173,7 @@ def show_profile():
                         "myEvents" : myEvents
                     }
                 }
-                db.users.update_one( {"_id": ObjectId("65307d907df3c2159ee8db6c")}, update)
+                db.users.update_one( {"_id": ObjectId("653098f24157aaba77523ac0")}, update)
 
 
     for event in user["myPostings"]:
@@ -190,10 +190,10 @@ def show_profile():
                     "$set": {
                        "myPostings" : myPostings
                 }
-            }
-            db.users.update_one({"_id": ObjectId("65307d907df3c2159ee8db6c")}, updatePostings)
+                }
+                db.users.update_one({"_id": ObjectId("653098f24157aaba77523ac0")}, updatePostings)
 
-            print("THERE IS NOTHING HERE: DELETE FROM ARRAY")
+                print("THERE IS NOTHING HERE: DELETE FROM ARRAY")
 
     return render_template("profile.html", user=user)
 
@@ -201,7 +201,7 @@ def show_profile():
 @app.route("/edit_user_info/<user_id>", methods=["GET", "POST", "PUT"])
 def editUser(user_id):
     user = db.users.find_one(
-        {"_id": ObjectId("65307d907df3c2159ee8db6c")}
+        {"_id": ObjectId("653098f24157aaba77523ac0")}
     )  # TODO : NEED TO RETRIEVE CURRENT USER FROM SESSION
 
     if request.method == "POST" or request.method == "PUT":
@@ -233,11 +233,44 @@ def editUser(user_id):
     return render_template("edit_user.html", user=user)
 
 
+@app.route('/editPosting/<post_id>', methods=["GET", "POST", "PUT"])
+def editPosting(post_id):
+    posting = db.event.find_one({"_id":ObjectId(post_id)})
+    print("POSTING" , posting)
+    if(request.method == "POST" or request.method == "POST"):
+        eventName = request.form.get("eventName")
+        organizer = request.form.get("organizer")
+        date = request.form.get("date")
+        time = request.form.get("time")
+        pointOfContact = request.form.get("pointOfContact")
+        description = request.form.get("description")
+        location = request.form.get("location")
+        numOfPpl = request.form.get("numOfPpl")
+
+        doc = {
+            "$set":
+            {
+            "eventName": eventName,
+            "organizer": organizer,
+            "date": date,
+            "time": time,
+            "pointOfContact": pointOfContact,
+            "description": description,
+            "location":location,
+            "numOfPpl":numOfPpl
+            }
+        }
+
+        db.event.update_one({"_id":ObjectId(post_id)}, doc)
+        return redirect(url_for('show_profile'))
+
+
+    return render_template('edit_posting.html',posting=posting)
+    
+
 
 @app.route('/delete/<user_id>/<event_id>')
 def delete(user_id, event_id):
-    
-    #db.event.delete_one({"_id":ObjectId(event_id)}) #delete this event from data base: do so only if in myPostings!
    
     #we also need to update user object and remove this from event array
     user = db.users.find_one({"_id":ObjectId(user_id)})
@@ -303,16 +336,17 @@ def delete(user_id, event_id):
 @app.route("/add_user", methods=["POST"])
 def createUser():
     doc = {
-        "name": "mark",
-        "email": "mark@gmail.com",
-        "password": "living&waters",
+        "name": "snow",
+        "email": "snow@gmail.com",
+        "password": "123&snow",
         "myEvents": [
             {"id": ObjectId("652f5ec73c5916795f01da0f")},
-            {"id": ObjectId("652f5cb3e3782d2a799feb73")},
-            {"id": ObjectId('65302f3644232125a2620ad5')}
+            {"id": ObjectId("653094223097ad79b94fea63")},
+            {"id": ObjectId('65309856e3a691c4c135fd16')}
         ],
         "myPostings": [
-            {"id": ObjectId("652f56bdbeaaa7a76dfa8c52")}],
+            {"id": ObjectId("6530987ae3a691c4c135fd17")},
+            ],
     }
 
     db.users.insert_one(doc)

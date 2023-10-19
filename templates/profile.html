@@ -48,7 +48,7 @@
            <p>Description: {{event.description}}</p>
            
         </div>
-        <form action ="{{url_for('delete',user_id=user._id,event_id=event._id)}}">       
+        <form  action ="{{url_for('delete',user_id=user._id,event_id=event._id)}}">       
             <button class="deleteBtn">delete</button>
         </form>
 
@@ -80,9 +80,13 @@
            <p>Location:{{event.location}}</p>
            <p>Point of Contact: {{event.pointOfContact}}</p>
            <p>Description: {{event.description}}</p>
+           <p>Number of RSVPs: {{event.numOfPpl}}</p>
            
         </div>
+        <form method="GET" action="{{url_for('editPosting',post_id=event._id)}}">
         <button class="editBtn">edit</button>
+        </form>
+
         <form action ="{{url_for('delete',user_id=user._id,event_id=event._id)}}">       
         <button class="deleteBtn">delete</button>
         </form>

@@ -1,6 +1,7 @@
-{% extends 'base.html' %} {%block content %}
+{% extends 'base.html' %}
+ {%block content %}
 
-<div class="editting">
+<div class="editing">
   <form method="post" action="{{url_for('editUser',user_id = user._id)}}">
     <label for="name"> username</label><br />
     <input type="text" id="name" name="fname" value="{{user.name}}" /><br />
