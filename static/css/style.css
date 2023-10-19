@@ -18,10 +18,8 @@ body{
  }
 
  .box{
-  
   padding:100px;
   row-gap: 100px;
-
  }
 
  header {
@@ -103,4 +101,6 @@ a:active {
   /* border:2px solid red; */
   margin-bottom: 20px;;
 }
+
+
 
