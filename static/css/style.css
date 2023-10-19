@@ -75,10 +75,18 @@ a:active {
 }
 
 #personalInfo{
-  border:1px solid black;
+  /* border:1px solid black; */
   max-width: 100%;
-  padding:50px;
+  padding: 40px;
+  margin:20px;
+  margin-top: 50px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
 
+}
+
+#personalInfo:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
 .editBtn{
@@ -104,3 +112,14 @@ a:active {
   margin-bottom: 20px;;
 }
 
+.event-box{
+  padding: 40px;
+  margin:20px;
+  margin-top: 50px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+.event-box:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
