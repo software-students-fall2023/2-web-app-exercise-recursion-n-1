@@ -1,25 +1,31 @@
-{% extends 'base.html' %}
-
-{%block content %}
-
-<div class="box">
-    <p id="tagline"> {{content}} Discover meaningful ways to make a difference in your community</p>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   
-
-   <form action="/login" method="get">
-    <button class="btn"> log in </button>
-   </form>
- <br/>
-
-
-    <form action="/register" method="get">
-        <button class="btn"> register</button>
-    </form>
-   
-</div>
-
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Loading Screen</title>
+    <link rel="stylesheet" href="./static/css/style.css">
+</head>
+<body>
+    <div class="loading-container">
+        <div class="loading-icon">
+            <img src="../static/public-services.png" alt="compass icon">
+            <!--credits: <a href="https://www.flaticon.com/free-icons/public-services" title="public services icons">Public services icons created by kliwir art - Flaticon</a>-->
+        </div>
+        <div class="app-name">
+            Volunteer Hub 
+        </div>
+        <div class="subtext">
+            Help your community! 
+        </div>
+    
+        <div class= "index-button">
+            <form class = "button-login" action="/login" method="get">
+                <button class="btn"> Login </button>
+            </form>
+            
+            <form action="/register" method="get">
+                <button class="btn"> Register</button>
+            </form>
+        </div>
+</body>
+</html>

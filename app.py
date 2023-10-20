@@ -21,19 +21,15 @@ app = Flask(__name__)
 if os.getenv("FLASK_ENV", "development") == "development":
     app.debug = True
 
-
 @app.route("/")
-def home():
+def loading():
     return render_template("index.html", content="Greetings!")
 
-
 # GET REQUESTS FOR LOG IN AND REGISTER
-
 
 @app.route("/login", methods=["GET"])
 def loginForm():
     return render_template("login.html")
-
 
 @app.route("/register", methods=["GET"])
 def registerForm():

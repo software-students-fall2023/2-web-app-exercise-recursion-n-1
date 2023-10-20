@@ -1,48 +1,89 @@
+/*
+Styling 
+*/
 
-body{
-  /* border: 2px solid green; */
+body {
   min-height: 100vh;
+  width: 100%;
+  font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* align along the flex direction */
+  color: #333;
+  justify-content: center;
   align-items: center;
+  margin: 0;
+  background-color: #f5f5f5; 
 }
- 
- .container{
-  border: 2px solid;
-  max-height: 100vh;
-  width:auto;
-  margin: 0 auto;
-  text-align: center;
-  overflow: scroll;
- }
 
- .box{
-  padding:100px;
-  row-gap: 100px;
- }
-
- header {
+header {
   display: flex;
   flex-direction: row;
-  justify-content: center; /* align along the flex direction */
-  align-items: center; /* align across the flex direction */
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px; 
 }
 
-.btn{
-  background-color: #4CAF50; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
+.index-box .h1{
+  color: #007bff; 
+  font-size: 36px;
+}
+
+.container {
+  width: 100%;
+  height: 80vh;
+  max-width: 800px; /* Adjust the maximum width of the container */
   text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
+  padding: 20px; /* Add padding for spacing inside the container */
+  border: 1px solid #ccc; /* Add a subtle border */
+  border-radius: 5px;
+  background-color: #fff; /* Background color for the container */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
 }
 
-.btn:hover{
-  background-color: #ad7600;
+/*
+  * Loading screen styles
+  */
+.loading-container {
+  text-align: center;
 }
+
+.loading-icon img {
+  width: 400px; 
+  margin-bottom: 30px;;
+}
+
+.app-name {
+  font-size: 70px; 
+  margin-top: 30px; 
+  color: #333; 
+}
+
+.subtext {
+  text-align: center;
+  font-size: 30px; 
+  margin-top: 25px; 
+  color: #555; 
+  margin-bottom: 100px;
+}
+form {
+  margin: 20px; /* Add spacing between the forms */
+}
+
+.btn {
+  padding: 30px 90px;
+  background-color: #5732ba;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+  font-size: 30px;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
 
 #tagline{
   margin-bottom: 20px;
@@ -110,10 +151,6 @@ a:active {
   margin-bottom: 20px;;
 }
 
-<<<<<<< HEAD
-
-
-=======
 .event-box{
   padding: 40px;
   margin:20px;
@@ -132,4 +169,3 @@ a:active {
   
 
 }
->>>>>>> 53aa2a802e222c9d1a68fbb3e37db369bf161fe0
