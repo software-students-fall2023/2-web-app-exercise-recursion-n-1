@@ -1,6 +1,7 @@
 {% extends 'base-initial.html' %}
 
 {% block content %}
+<div class="editing">
   <h2>Add Event</h2>
     <form action="{{ url_for('add_event') }}" method="post">
         <label for="eventName">Event Name:</label>
@@ -21,5 +22,6 @@
         <input type="number" id="numOfPpl" name="numOfPpl" required>
         <button class="post-btn">Post</button>
       </form>
+    </div>
 
 {% endblock %}

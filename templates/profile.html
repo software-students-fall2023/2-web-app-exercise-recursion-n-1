@@ -12,9 +12,9 @@
 
     <div class="labels">
         <h3>Perosnal Info</h3>
-        <form action="{{ url_for('editUser',user_id=user._id)}}" method="GET">
+        <a href="{{ url_for('editUser',user_id=user._id)}}" method="GET">
           <button class="editBtn">edit</button>
-        </form>
+        </a>
     </div>
     <div id="personalInfo">
        
@@ -48,9 +48,9 @@
            <p>Description: {{event.description}}</p>
            
         </div>
-        <form  action ="{{url_for('delete',user_id=user._id,event_id=event._id)}}">       
+        <a href ="{{url_for('delete',user_id=user._id,event_id=event._id)}}">       
             <button class="deleteBtn">delete</button>
-        </form>
+        </a>
 
 
     
@@ -83,13 +83,13 @@
            <p>Number of RSVPs: {{event.numOfPpl}}</p>
            
         </div>
-        <form method="GET" action="{{url_for('editPosting',post_id=event._id)}}">
+        <a href="{{url_for('editPosting',post_id=event._id)}}">
         <button class="editBtn">edit</button>
-        </form>
+        </a>
 
-        <form action ="{{url_for('delete',user_id=user._id,event_id=event._id)}}">       
+        <a href ="{{url_for('delete',user_id=user._id,event_id=event._id)}}">       
         <button class="deleteBtn">delete</button>
-        </form>
+        </a>
 
        
        

@@ -2,6 +2,19 @@
 Styling 
 */
 
+
+main{
+  /* border: 2px solid blue; */
+  
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 475px;
+
+  
+}
 body {
   min-height: 100vh;
   width: 100%;
@@ -20,7 +33,8 @@ header {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px; 
+ 
+  
 }
 
 .index-box .h1{
@@ -36,8 +50,9 @@ header {
   padding: 20px; /* Add padding for spacing inside the container */
   border: 1px solid #ccc; /* Add a subtle border */
   border-radius: 5px;
-  background-color: #fff; /* Background color for the container */
+  background-color: #ffffff; /* Background color for the container */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+  
 }
 
 /*
@@ -65,8 +80,17 @@ header {
   color: #555; 
   margin-bottom: 100px;
 }
+
 form {
-  margin: 20px; /* Add spacing between the forms */
+
+  padding: 2rem;
+  border-radius: 1rem;
+  background-color: hsl(209, 71%, 73%);
+  border: 4px solid hsl(0, 0%, 90%);
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+
 }
 
 .btn {
@@ -94,7 +118,7 @@ a:link {
 }
 
 a:visited {
-  text-decoration: none;
+  color:#5732ba;
 }
 
 a:hover {
@@ -102,7 +126,20 @@ a:hover {
 }
 
 a:active {
-  text-decoration: none;
+  color: #007bff; 
+}
+
+/*
+profile page
+*/
+
+.box{
+  margin:auto;
+  max-width: 100%;
+  height:auto;
+  overflow: auto;
+  /* border:2px solid red; */
+  padding:10%;
 }
 
 .avatar {
@@ -115,6 +152,7 @@ a:active {
 
 #personalInfo{
   /* border:1px solid black; */
+
   max-width: 100%;
   padding: 40px;
   margin:20px;
@@ -164,8 +202,6 @@ a:active {
 }
 
 .editing{
-  padding:80px;
-
-  
-
+  margin-top: 400px;
+  padding:200px;
 }

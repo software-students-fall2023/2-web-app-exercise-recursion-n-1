@@ -72,7 +72,7 @@ def processLogin():
 def processRegistration():
     # Get the user data from form
     email = request.form["email"]
-    username = request.form["username"]
+    username = request.form["name"]
     password = request.form["password"]
     confirmPassword = request.form["confirmPassword"]
 
@@ -81,7 +81,7 @@ def processRegistration():
     # TODO: Check that passwords match -> if not route back to register with message
 
     # Create an account in the database
-    newAccount = {"email": email, "username": username, "password": password}
+    newAccount = {"email": email, "name": username, "password": password,"myEvents":[],"myPostings":[]}
 
     db.users.insert_one(newAccount)
 
