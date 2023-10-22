@@ -2,57 +2,41 @@
 Styling 
 */
 
-
-main{
-  /* border: 2px solid blue; */
-  
-  overflow: auto;
+header {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  padding:0;
   justify-content: center;
-  height: 475px;
-
-  
+  align-items: center;
+  font-size: 24px;
+  color: #504f4f;
+  background-color: hsla(30, 1%, 42%, 0.137);
+  position: fixed; /* Add this line to make the header fixed */
+  top: 0; /* Stick it to the top */
+  width: 100%; /* Make it full-width */
+  z-index: 1000; /* Ensure it appears above other content */
 }
+
+
 body {
   min-height: 100vh;
   width: 100%;
   font-family: Arial, sans-serif;
   display: flex;
+  margin: 0;
   flex-direction: column;
   color: #333;
   justify-content: center;
   align-items: center;
-  margin: 0;
   background-color: #f5f5f5; 
-}
-
-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
- 
-  
-}
-
-.index-box .h1{
-  color: #007bff; 
-  font-size: 36px;
 }
 
 .container {
   width: 100%;
-  height: 80vh;
-  max-width: 800px; /* Adjust the maximum width of the container */
+  height: 100vh;
   text-align: center;
-  padding: 20px; /* Add padding for spacing inside the container */
-  border: 1px solid #ccc; /* Add a subtle border */
   border-radius: 5px;
-  background-color: #ffffff; /* Background color for the container */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
-  
+  background-color: #f5f5f5; 
 }
 
 /*
@@ -81,18 +65,6 @@ header {
   margin-bottom: 100px;
 }
 
-form {
-
-  padding: 2rem;
-  border-radius: 1rem;
-  background-color: hsl(209, 71%, 73%);
-  border: 4px solid hsl(0, 0%, 90%);
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
-
-}
-
 .btn {
   padding: 30px 90px;
   background-color: #5732ba;
@@ -101,12 +73,68 @@ form {
   border-radius: 5px;
   cursor: pointer;
   margin: 5px;
-  font-size: 30px;
+  font-size: 45px;
 }
 
 .btn:hover {
   background-color: #0056b3;
 }
+
+
+/*
+Login and Register pages
+*/
+
+form[action="/login"], form[action="/register"]{
+  padding: 2rem;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+  border: 2px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 400px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.form-login{
+  margin: 145px auto 0 0;
+}
+
+.form-register{
+  margin: 70px auto 0 0;
+}
+
+.form-login label ,.form-register label {
+  text-align: left;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.form-login input, .form-register input {
+  padding: 13px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-login button[type="submit"], .form-register button[type="submit"] {
+  padding: 15px;
+  background-color: #5632ba;
+  font-size: 20px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.form-login [type="submit"]:hover, .form-register [type="submit"]:hover {
+  background: #0056b3;
+}
+
+
 
 
 #tagline{
