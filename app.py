@@ -6,6 +6,7 @@ from flask import (
     abort,
     url_for,
     make_response,
+    session
 )
 import pymongo
 from bson.objectid import ObjectId
@@ -17,6 +18,7 @@ from db import db
 import sys
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
 
 if os.getenv("FLASK_ENV", "development") == "development":
     app.debug = True
@@ -29,7 +31,10 @@ def loading():
 
 @app.route("/login", methods=["GET"])
 def loginForm():
-    return render_template("login.html")
+     #Check if user has just tried to log in and failed vis a vis a passed variable
+    incorrect_login = request.args.get('incorrect_login', False)
+
+    return render_template("login.html", incorrect_login=incorrect_login)
 
 @app.route("/register", methods=["GET"])
 def registerForm():
@@ -52,20 +57,22 @@ def processLogin():
     if getUser == None:
         match = False
 
+    # Fail user not found
     if match == False:
-        # Fail user not found
-        print("no documents found")
+        print("no matching user document found")
+        return render_template("login.html", incorrect_login=True)
 
+    # Fail passwords do not match
     elif getUser["password"] != password:
-        # Fail passwords do not match
         print("Password Incorrect")
-
+        return render_template("login.html", incorrect_login=True)
+    
+    # Success -> log the user in with their account & add COOKIE
     else:
-        # Success -> log the user in with their account & add COOKIE
-        print("success")
-        return redirect(url_for("event"))
+        session['email'] = email
+        print(session.get('email', "example@example.com")) 
 
-    return render_template("login.html")
+        return redirect(url_for("event"))
 
 
 @app.route("/register", methods=["POST"])

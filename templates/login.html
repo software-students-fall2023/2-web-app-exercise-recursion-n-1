@@ -5,7 +5,12 @@
 
 <div class="box">
 
+    {% if incorrect_login %}
+        <p style="color: red;">Incorrect username or password. Please try again.</p>
+    {% endif %}
+
     <form method="post" action="/login">
+
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
 
