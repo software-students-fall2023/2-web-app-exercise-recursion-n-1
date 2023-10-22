@@ -72,7 +72,7 @@ def processLogin():
     # Success -> log the user in with their account & add COOKIE
     else:
         session['email'] = email
-        print(session.get('email', "example@example.com")) 
+        # print(session.get('email', "example@example.com")) 
 
         return redirect(url_for("event"))
 
@@ -109,6 +109,10 @@ def processRegistration():
 
 @app.route("/events", methods=["GET", "POST"])
 def event():
+
+    #example of pulling email from the session, example@example.com is the default if no email is found
+    print(session.get('email', "example@example.com")) 
+
     if request.method == "POST":
         search_query = request.form.get("search_query")
         search_option = request.form.get("search_option")
