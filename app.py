@@ -61,7 +61,8 @@ def registerForm():
     return render_template(
         "register.html", noPasswordMatch=noPasswordMatch, userExists=userExists
     )
-        return render_template("register.html", noPasswordMatch = noPasswordMatch, userExists=userExists )
+
+    return render_template("register.html", noPasswordMatch = noPasswordMatch, userExists=userExists )
 
 
 # POST REQUESTS FOR LOGIN AND REGISTER
