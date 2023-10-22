@@ -7,17 +7,8 @@
         <p>Volunteer Hub</p>
     </header>
     </a>
-    
+
 <div class="box">
-
-    {% if noPasswordMatch %}
-        <p style="color: red;">Passwords do not match. Please try again.</p>
-    {% endif %}
-
-    {% if userExists %}
-        <p style="color: red;">User already exists. Please try again.</p>
-    {% endif %}
-
 
     <form method="post" action="/register" class="form-register">
         <label for="email">Email:</label>
@@ -42,6 +33,14 @@
 
         <button type="submit">Sign Up</button>
     </form>
+    {% if noPasswordMatch %}
+    <p style="color: red;">Passwords do not match. Please try again.</p>
+    {% endif %}
+
+    {% if userExists %}
+        <p style="color: red;">User already exists. Please try again.</p>
+    {% endif %}
+
 
 
 {% endblock %}

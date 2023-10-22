@@ -8,9 +8,9 @@ header {
   padding:0;
   justify-content: center;
   align-items: center;
-  font-size: 24px;
-  color: #504f4f;
-  background-color: hsla(30, 1%, 42%, 0.137);
+  font-size: 20px;
+  color: #ffffff;
+  background-color: hsl(30, 3%, 42%);
   position: fixed; /* Add this line to make the header fixed */
   top: 0; /* Stick it to the top */
   width: 100%; /* Make it full-width */
@@ -67,7 +67,7 @@ body {
 
 .btn {
   padding: 30px 90px;
-  background-color: #5732ba;
+  background-color: #3240ba;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -78,12 +78,19 @@ body {
 
 .btn:hover {
   background-color: #0056b3;
+
 }
 
 
 /*
 Login and Register pages
 */
+
+.login-error-message{
+  color: red;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
 
 form[action="/login"], form[action="/register"]{
   padding: 2rem;
@@ -121,7 +128,7 @@ form[action="/login"], form[action="/register"]{
 
 .form-login button[type="submit"], .form-register button[type="submit"] {
   padding: 15px;
-  background-color: #5632ba;
+  background-color: #3240ba;
   font-size: 20px;
   color: #fff;
   border: none;
@@ -134,28 +141,6 @@ form[action="/login"], form[action="/register"]{
   background: #0056b3;
 }
 
-
-
-
-#tagline{
-  margin-bottom: 20px;
-}
-
-a:link {
-  text-decoration: none;
-}
-
-a:visited {
-  color:#5732ba;
-}
-
-a:hover {
-  text-decoration: none;
-}
-
-a:active {
-  color: #007bff; 
-}
 
 /*
 profile page
@@ -187,7 +172,6 @@ profile page
   margin-top: 50px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
-
 }
 
 #personalInfo:hover {
@@ -217,6 +201,13 @@ profile page
   margin-bottom: 20px;;
 }
 
+/*
+  * Event page styles
+  */
+  
+.events-container{
+  margin-top: 100px;
+}
 .event-box{
   padding: 40px;
   margin:20px;
@@ -225,11 +216,82 @@ profile page
   transition: 0.3s;
 }
 
-.event-box:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+.add-btn {
+  background-color: #3240ba;;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  padding: 10px 30px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
-.editing{
-  margin-top: 400px;
-  padding:200px;
+.add-btn:hover {
+  background: #0056b3;
+}
+
+/* Form for searching */
+form[action="{{ url_for('event') }"] {
+  display: flex;
+  align-items: center;
+}
+
+input[name="search_query"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px; /* Add some space between input and select */
+}
+
+select[name="search_option"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px; /* Add some space between select and button */
+}
+
+/* Button for searching */
+.search-btn {
+  background-color: #3240ba;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.search-btn:hover {
+  background: #0056b3;
+}
+
+/* Styling for each event box */
+.event-box {
+  padding: 40px;
+  margin:20px;
+  margin-top: 50px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+.author, .when, .contact, .location, .description, .numOfPpl {
+  text-align: left;
+  font-size: 16px;
+  margin: 5px 0;
+  color: #555;
+}
+
+/* Additional styles for the content within each event box */
+.event-name {
+  margin-top: 0px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #3240ba;
+}
+
+.bold-text{
+  font-weight: bold;
+  font-size: 18px;
 }

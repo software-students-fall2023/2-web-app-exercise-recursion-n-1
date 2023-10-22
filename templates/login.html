@@ -10,9 +10,6 @@
 
 <div class="box">
 
-    {% if incorrect_login %}
-        <p style="color: red;">Incorrect username or password. Please try again.</p>
-    {% endif %}
 
     <form method="post" action="/login" class="form-login">
 
@@ -27,6 +24,9 @@
         <br>
         <button  type="submit">Sign In</button>
     </form>
+    {% if incorrect_login %}
+    <p class="login-error-message">Incorrect username or password. Please try again.</p>
+{% endif %}
 
 </div>
 

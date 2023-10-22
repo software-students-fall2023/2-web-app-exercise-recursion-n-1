@@ -1,44 +1,53 @@
-{% extends 'base.html' %}
-
-{%block content %}
+{% extends 'base.html' %} {%block content %}
 <a href="{{url_for('loading')}}">
-    <header>
-        <p>Volunteer Hub</p>
-    </header>
-    </a>
+  <header>
+    <p>Volunteer Hub</p>
+  </header>
+</a>
 
-<div class="box">
-<h2>Events</h2>
-
-<form action="{{ url_for('add_event') }}" method="get">
-    <button class="add-btn">Post Event</button>
-</form>
-<form action="{{ url_for('event') }}" method="post">
-    <input type="text" name="search_query" placeholder="Search...">
+<div class="events-container">
+  <form action="{{ url_for('event') }}" method="post">
+    <input type="text" name="search_query" placeholder="Search..." />
     <select name="search_option">
-        <option value="" disabled selected>Option</option>
-        <option value="event_name">Event Name</option>
-        <option value="organizer">Organizer</option>
-        <option value="location">Location</option>
-        <option value="Description">Description</option>
-        <option value="date">Date</option>
+      <option value="" disabled selected>Option</option>
+      <option value="event_name">Event Name</option>
+      <option value="organizer">Organizer</option>
+      <option value="location">Location</option>
+      <option value="Description">Description</option>
+      <option value="date">Date</option>
     </select>
     <button type="submit" class="search-btn">Search</button>
-</form>  
-    <section class="event">
-        {% for doc in docs %}
-        <article class="event-box">
-            <p class="event-name">Event: {{ doc.eventName }}</p>
-            <p class="author">Organizer: {{ doc.organizer }}</p>
-            <p class="when">When: {{ doc.date }} at {{ doc.time }}</p>
-            <p class="contact">Contact: {{ doc.pointOfContact }}</p>
-            <p class="location">Location: {{ doc.location }}</p>
-            <p class="description">Description: {{ doc.description }}</p>
-            <p class="numOfPpl">Attendees: {{ doc.numOfPpl }}</p>
-        </article>
-        {%endfor%}
-
-    </section>
+  </form>
+  <form action="{{ url_for('add_event') }}" method="get">
+    <button class="add-btn">Post Event</button>
+  </form>
+  <section class="event">
+    {% for doc in docs %}
+    <article class="event-box">
+      <p class="event-name">
+        {{ doc.eventName }}
+      </p>
+      <p class="author">
+        <span class="bold-text">Organizer:</span> {{ doc.organizer }}
+      </p>
+      <p class="when">
+        <span class="bold-text">When:</span> {{ doc.date }} at {{ doc.time }}
+      </p>
+      <p class="contact">
+        <span class="bold-text">Contact:</span> {{ doc.pointOfContact }}
+      </p>
+      <p class="location">
+        <span class="bold-text">Location:</span> {{ doc.location }}
+      </p>
+      <p class="description">
+        <span class="bold-text">Description:</span> {{ doc.description }}
+      </p>
+      <p class="numOfPpl">
+        <span class="bold-text">Attendees:</span> {{ doc.numOfPpl }}
+      </p>
+    </article>
+    {%endfor%}
+  </section>
 </div>
-    
+
 {% endblock %}
