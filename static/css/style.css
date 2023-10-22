@@ -276,7 +276,7 @@ select[name="search_option"] {
   transition: 0.3s;
 }
 
-.author, .when, .contact, .location, .description, .numOfPpl {
+.author, .when, .contact, .location, .description, .numOfPpl, .capacity {
   text-align: left;
   font-size: 16px;
   margin: 5px 0;
@@ -294,4 +294,19 @@ select[name="search_option"] {
 .bold-text{
   font-weight: bold;
   font-size: 18px;
+}
+
+.rsvp-btn {
+  background-color: #bd37a0; 
+  color: #fff; 
+  border: none; 
+  margin-top: 10px;
+  padding: 10px 20px; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  font-size: 16px; 
+}
+
+.rsvp-btn:hover {
+  background-color: #a55ca5; /
 }
