@@ -36,12 +36,13 @@
     </div>
    
     {% if user.myEvents|length == 0  %}
-        <p> You have not saved any events! Go browse events and help out the community!</p>
+    <p> You have not saved any events! Go browse events and help out the community!</p>
     {% else %}
     {% for event in user.myEvents %}
     <div id="personalInfo">
        
         <div class="fields">
+
            <h3>{{event.eventName}}</h3>
            <p>Organizer: {{event.organizer}}</p>
            <p>When : {{event.date}}</p>
@@ -77,7 +78,7 @@
            <h3>{{event.eventName}}</h3>
            <p>Organizer: {{event.organizer}}</p>
            <p>When : {{event.date}}</p>
-           <p> Time : {{event.time}}</p>
+           <p>Time : {{event.time}}</p>
            <p>Location:{{event.location}}</p>
            <p>Point of Contact: {{event.pointOfContact}}</p>
            <p>Description: {{event.description}}</p>
@@ -85,11 +86,11 @@
            
         </div>
         <a href="{{url_for('editPosting',post_id=event._id)}}">
-        <button class="editBtn">edit</button>
+        <button class="editBtn">Edit</button>
         </a>
 
         <a href ="{{url_for('delete',user_id=user._id,event_id=event._id)}}">       
-        <button class="deleteBtn">delete</button>
+        <button class="deleteBtn">Delete</button>
         </a>
 
        
