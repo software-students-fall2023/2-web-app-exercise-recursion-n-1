@@ -139,6 +139,11 @@ form[action="/login"], form[action="/register"]{
 
 .form-login [type="submit"]:hover, .form-register [type="submit"]:hover {
   background: #0056b3;
+
+}
+
+.editing{
+  margin-top:150px
 }
 
 
@@ -236,6 +241,7 @@ profile page
 form[action="{{ url_for('event') }"] {
   display: flex;
   align-items: center;
+ 
 }
 
 input[name="search_query"] {
