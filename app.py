@@ -26,7 +26,10 @@ if os.getenv("FLASK_ENV", "development") == "development":
 
 @app.route("/")
 def loading():
-    return render_template("index.html", content="Greetings!")
+    if "userid" in session:
+        return redirect(url_for("show_profile")) 
+    else:
+        return render_template("index.html", content="Greetings!")
 
 
 # GET REQUESTS FOR LOG IN AND REGISTER
@@ -36,18 +39,29 @@ def loading():
 def loginForm():
     # Check if user has just tried to log in and failed vis a vis a passed variable
     incorrect_login = request.args.get("incorrect_login", False)
+    if "userid" in session:
+        return redirect(url_for("show_profile")) 
+    else:
+        #Check if user has just tried to log in and failed vis a vis a passed variable
+        incorrect_login = request.args.get('incorrect_login', False)
 
-    return render_template("login.html", incorrect_login=incorrect_login)
+        return render_template("login.html", incorrect_login=incorrect_login)
 
 
 @app.route("/register", methods=["GET"])
 def registerForm():
     noPasswordMatch = request.args.get("noPasswordMatch", False)
     userExists = request.args.get("userExists", False)
+    if "userid" in session:
+        return redirect(url_for("show_profile")) 
+    else:
+        noPasswordMatch = request.args.get('noPasswordMatch', False)
+        userExists = request.args.get('userExists', False)
 
     return render_template(
         "register.html", noPasswordMatch=noPasswordMatch, userExists=userExists
     )
+        return render_template("register.html", noPasswordMatch = noPasswordMatch, userExists=userExists )
 
 
 # POST REQUESTS FOR LOGIN AND REGISTER
@@ -117,36 +131,50 @@ def processRegistration():
         "myEvents": [],
         "myPostings": [],
     }
+    newAccount = {"email": email, "name": username, "password": password,"myEvents":[],"myPostings":[]}
+    #newAccount = {"email": email, "name": username, "password": password,"myEvents":[{"id":ObjectId("653094223097ad79b94fea63")},{"id": ObjectId("652f5ec73c5916795f01da0f")}],"myPostings":[{"id":ObjectId("653596008012ce4175f07742")},{"id":ObjectId("653596268012ce4175f07743")}]}
     db.users.insert_one(newAccount)
 
     return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    if "userid" in session or "email" in session:
+        session.pop("userid", None)
+        session.pop("email", None)
+
+    return redirect(url_for("loading"))
 
 
 @app.route("/events", methods=["GET", "POST"])
 def event():
     print(session.get("email", "example@example.com"))
 
-    if "userid" not in session:
-        return redirect(url_for("loading"))
-    if request.method == "POST":
-        search_query = request.form.get("search_query")
-        search_option = request.form.get("search_option")
-        query = {}
-        if search_option == "event_name":
-            query = {"eventName": {"$regex": search_query, "$options": "i"}}
+    #example of pulling email from the session, example@example.com is the default if no email is found
+    print(session.get('email', "example@example.com")) 
+
+    if "userid" in session:
+        if request.method == "POST":
+            search_query = request.form.get("search_query")
+            search_option = request.form.get("search_option")
+            query = {}
+            if search_option == "event_name":
+                query = {"eventName": {"$regex": search_query, "$options": "i"}}
+                docs = db["event"].find(query).sort("created_at", -1)
+            elif search_option == "organizer":
+                query = {"organizer": {"$regex": search_query, "$options": "i"}}
+            elif search_option == "description":
+                query = {"description": {"$regex": search_query, "$options": "i"}}
+            elif search_option == "location":
+                query = {"location": {"$regex": search_query, "$options": "i"}}
+            elif search_option == "date":
+                query = {"date": {"$regex": search_query, "$options": "i"}}
             docs = db["event"].find(query).sort("created_at", -1)
-        elif search_option == "organizer":
-            query = {"organizer": {"$regex": search_query, "$options": "i"}}
-        elif search_option == "description":
-            query = {"description": {"$regex": search_query, "$options": "i"}}
-        elif search_option == "location":
-            query = {"location": {"$regex": search_query, "$options": "i"}}
-        elif search_option == "date":
-            query = {"date": {"$regex": search_query, "$options": "i"}}
-        docs = db["event"].find(query).sort("created_at", -1)
+        else:
+            docs = db["event"].find({}).sort("created_at", -1)
+        return render_template("events.html", docs=docs)
     else:
-        docs = db["event"].find({}).sort("created_at", -1)
-    return render_template("events.html", docs=docs)
+        return redirect(url_for("loading"))
 
 
 @app.route("/add_event", methods=["GET", "POST"])
@@ -183,6 +211,33 @@ def add_event():
         """
         return redirect(url_for("event"), error_message=error_message)
     return render_template("add_event.html")
+    if "userid" in session:
+        if request.method == "POST":
+            event_name = request.form.get("eventName")
+            organizer = request.form.get("organizer")
+            date = request.form.get("date")
+            time = request.form.get("time")
+            point_of_contact = request.form.get("pointOfContact")
+            location = request.form.get("location")
+            description = request.form.get("description")
+            num_of_ppl = request.form.get("numOfPpl")
+
+            new_event = {
+                "eventName": event_name,
+                "organizer": organizer,
+                "date": date,
+                "time": time,
+                "pointOfContact": point_of_contact,
+                "location": location,
+                "description": description,
+                "numOfPpl": num_of_ppl,
+            }
+            db["event"].insert_one(new_event)
+            return redirect(url_for("event"))
+
+        return render_template("add_event.html")
+    else:
+        return redirect(url_for("loading"))
 
 
 @app.route("/rsvp", methods=["POST"])
@@ -218,10 +273,7 @@ def show_profile():
         id = session["userid"]
         user = db.users.find_one(
             {"_id": ObjectId(id)}
-        )  # TODO : NEED TO RETRIEVE CURRENT USER FROM SESSION
-
-        # myEvts = db.event.find_one({"_id": ObjectId("652f5cb3e3782d2a799feb73")}) #temp data
-        # myPosting = db.event.find({}) #temp data
+        ) 
 
         myPostings = user["myPostings"]
         myEvents = user["myEvents"]
@@ -276,7 +328,9 @@ def editUser(user_id):
 
         user = db.users.find_one(
             {"_id": ObjectId(id)}
-        )  # TODO : NEED TO RETRIEVE CURRENT USER FROM SESSION
+        )  
+       
+       
 
         if request.method == "POST" or request.method == "PUT":
             name = request.form.get("fname")
@@ -311,73 +365,104 @@ def editPosting(post_id):
         description = request.form.get("description")
         location = request.form.get("location")
         numOfPpl = request.form.get("numOfPpl")
+    if "userid" in session:
+        
+        posting = db.event.find_one({"_id":ObjectId(post_id)})
+        print("POSTING" , posting)
+        if(request.method == "POST" or request.method == "POST"):
+            eventName = request.form.get("eventName")
+            organizer = request.form.get("organizer")
+            date = request.form.get("date")
+            time = request.form.get("time")
+            pointOfContact = request.form.get("pointOfContact")
+            description = request.form.get("description")
+            location = request.form.get("location")
+            numOfPpl = request.form.get("numOfPpl")
 
-        doc = {
-            "$set": {
+            doc = {
+                "$set":
+                {
                 "eventName": eventName,
                 "organizer": organizer,
                 "date": date,
                 "time": time,
                 "pointOfContact": pointOfContact,
                 "description": description,
-                "location": location,
-                "numOfPpl": numOfPpl,
+                "location":location,
+                "numOfPpl":numOfPpl
+                }
             }
-        }
 
-        db.event.update_one({"_id": ObjectId(post_id)}, doc)
-        return redirect(url_for("show_profile"))
-
-    return render_template("edit_posting.html", posting=posting)
-
+            db.event.update_one({"_id":ObjectId(post_id)}, doc)
+            return redirect(url_for('show_profile'))
+        return render_template('edit_posting.html',posting=posting)
+    else:
+        return redirect(url_for('loading'))
+    
+    
 
 @app.route("/delete/<user_id>/<event_id>")
 def delete(user_id, event_id):
-    # we also need to update user object and remove this from event array
-    user = db.users.find_one({"_id": ObjectId(user_id)})
-    myEvents = user["myEvents"]  # myEvents array
-    myPostings = user["myPostings"]  # myPosting array
+   
+   if "userid" in session:
+        print("PRINT IDS", user_id,session["userid"] )
+        #we also need to update user object and remove this from event array
+        user = db.users.find_one({"_id":ObjectId(user_id)})
+        myEvents = user["myEvents"] #myEvents array
+        myPostings = user["myPostings"] #myPosting array
 
-    # print("NEW PRINTS!")
+        #print("NEW PRINTS!")
+        
+        print("BEFORE: MY EVENTS",myEvents)
+        
+        #print(myPostings)
 
-    print("BEFORE: MY EVENTS", myEvents)
+        #my events -> remove from list ONLY
+    
+        myEvents = [event for event in myEvents if event.get("id") != ObjectId(event_id)]
+        print("After",myEvents)
 
-    # print(myPostings)
+        update = {
+            "$set": {
+                "myEvents" : myEvents
+            }
 
-    # my events -> remove from list ONLY
+        }
 
-    myEvents = [event for event in myEvents if event.get("id") != ObjectId(event_id)]
-    print("After", myEvents)
-    update = {"$set": {"myEvents": myEvents}}
+        db.users.update_one({"_id":ObjectId(user_id)}, update)
+        #user["myEvents"] = myEvents
+        print("USER UPDATE", user)
+        
+        #print("FOUND NONE FROM MY EVENT")
 
-    db.users.update_one({"_id": ObjectId(user_id)}, update)
-    # user["myEvents"] = myEvents
-    print("USER UPDATE", user)
+        #my posting-> remove from list AND database
 
-    # print("FOUND NONE FROM MY EVENT")
+        obj = False # a flag that indicates whether or not we need to delete from database
+        for i in range(len(myPostings)):
+            if(myPostings[i]['id'] == ObjectId(event_id)):
+                obj = True
+                break
 
-    # my posting-> remove from list AND database
+        # remove from array
+        myPostings = [event for event in myPostings if event.get("id") != ObjectId(event_id)]
 
-    obj = False  # a flag that indicates whether or not we need to delete from database
-    for i in range(len(myPostings)):
-        if myPostings[i]["id"] == ObjectId(event_id):
-            obj = True
-            break
+        
+        updatePostings = {
+            "$set": {
+                "myPostings" : myPostings
+            }
+        }
 
-    # remove from array
-    myPostings = [
-        event for event in myPostings if event.get("id") != ObjectId(event_id)
-    ]
+        db.users.update_one({"_id":ObjectId(user_id)}, updatePostings)
 
-    updatePostings = {"$set": {"myPostings": myPostings}}
+        # remove from database
+        if(obj == True):
+            db.event.delete_one({"_id":ObjectId(event_id)})
 
-    db.users.update_one({"_id": ObjectId(user_id)}, updatePostings)
-
-    # remove from database
-    if obj == True:
-        db.event.delete_one({"_id": ObjectId(event_id)})
-
-    return redirect(url_for("show_profile"))
+        return redirect(url_for('show_profile'))
+   
+   else:
+       return redirect(url_for('loading'))
 
 
 ######
