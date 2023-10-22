@@ -38,19 +38,21 @@ def loginForm():
 
 @app.route("/register", methods=["GET"])
 def registerForm():
-    return render_template("register.html")
+    noPasswordMatch = request.args.get('noPasswordMatch', False)
+    userExists = request.args.get('userExists', False)
+
+    return render_template("register.html", noPasswordMatch = noPasswordMatch, userExists=userExists )
 
 
 # POST REQUESTS FOR LOGIN AND REGISTER
 
-
 @app.route("/login", methods=["POST"])
 def processLogin():
-    # Get the user data from form
+    # Get the user enterd form data
     email = request.form["email"]
     password = request.form["password"]
 
-    # TODO: Try to log user in by matching username and password
+    #Try to match the user entered email with a document in the database
     getUser = db.users.find_one({"email": email})
 
     match = True
@@ -83,18 +85,26 @@ def processRegistration():
     password = request.form["password"]
     confirmPassword = request.form["confirmPassword"]
 
-    # TODO: check for unique username/email?
+    #check the user ented email is unique -> If not route back to register page with message
+    getUser = db.users.find_one({"email": email})
 
-    # TODO: Check that passwords match -> if not route back to register with message
+    match = True
+    if getUser == None:
+        match = False
+
+    if(match): 
+        return render_template("register.html", userExists=True)
+
+    #Check that passwords match -> if not route back to register page with message
+    if(password != confirmPassword): 
+         return render_template("register.html", noPasswordMatch=True)
 
     # Create an account in the database
     newAccount = {"email": email, "name": username, "password": password,"myEvents":[],"myPostings":[]}
-
     db.users.insert_one(newAccount)
 
-    # TODO: Log the user in with their created account & add COOKIE
-
-    return render_template("register.html")
+    #Success -> orward user to the log in page
+    return render_template("login.html")
 
 
 @app.route("/events", methods=["GET", "POST"])
