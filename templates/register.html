@@ -1,19 +1,16 @@
-{% extends 'base-initial.html' %}
+{% extends 'base.html' %}
 
 {%block content %}
 
+<a href="{{url_for('loading')}}">
+    <header>
+        <p>Volunteer Hub</p>
+    </header>
+    </a>
+
 <div class="box">
 
-    {% if noPasswordMatch %}
-        <p style="color: red;">Passwords do not match. Please try again.</p>
-    {% endif %}
-
-    {% if userExists %}
-        <p style="color: red;">User already exists. Please try again.</p>
-    {% endif %}
-
-
-    <form method="post" action="/register">
+    <form method="post" action="/register" class="form-register">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
 
@@ -36,6 +33,14 @@
 
         <button type="submit">Sign Up</button>
     </form>
-</div>
+    {% if noPasswordMatch %}
+    <p style="color: red;">Passwords do not match. Please try again.</p>
+    {% endif %}
+
+    {% if userExists %}
+        <p style="color: red;">User already exists. Please try again.</p>
+    {% endif %}
+
+
 
 {% endblock %}
