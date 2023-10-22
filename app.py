@@ -71,7 +71,10 @@ def processLogin():
     
     # Success -> log the user in with their account & add COOKIE
     else:
+        print("hello session")
+        session['userid'] = str(getUser["_id"])
         session['email'] = email
+        print(session)
         # print(session.get('email', "example@example.com")) 
 
         return redirect(url_for("event"))
@@ -164,90 +167,102 @@ def add_event():
 
 @app.route("/profile")
 def show_profile():
-    user = db.users.find_one(
-        {"_id": ObjectId("653098f24157aaba77523ac0")}
-    )  # TODO : NEED TO RETRIEVE CURRENT USER FROM SESSION
+    if "userid" in session:
+        id = session["userid"]
+        user = db.users.find_one(
+            {"_id": ObjectId(id)}
+        )  # TODO : NEED TO RETRIEVE CURRENT USER FROM SESSION
 
-    # myEvts = db.event.find_one({"_id": ObjectId("652f5cb3e3782d2a799feb73")}) #temp data
-    # myPosting = db.event.find({}) #temp data
+        # myEvts = db.event.find_one({"_id": ObjectId("652f5cb3e3782d2a799feb73")}) #temp data
+        # myPosting = db.event.find({}) #temp data
 
-    myPostings = user["myPostings"]
-    myEvents = user["myEvents"]
+        myPostings = user["myPostings"]
+        myEvents = user["myEvents"]
 
-    print("MY POSTINGS",myPostings)
-    for event in user["myEvents"]:
-        if(event is not None):
-            print(event)
-            event_id = event["id"]
-            event_details = db.event.find_one({"_id": ObjectId(event_id)})
-            if(event_details is not None):
-                event.update(event_details)
-            else:
-                myEvents = [event for event in myEvents if event.get("id") != ObjectId(event_id)]
-                print("After",myEvents)
-                update = {
-                    "$set": {
-                        "myEvents" : myEvents
+        print("MY POSTINGS",myPostings)
+        for event in user["myEvents"]:
+            if(event is not None):
+                print(event)
+                event_id = event["id"]
+                event_details = db.event.find_one({"_id": ObjectId(event_id)})
+                if(event_details is not None):
+                    event.update(event_details)
+                else:
+                    myEvents = [event for event in myEvents if event.get("id") != ObjectId(event_id)]
+                    print("After",myEvents)
+                    update = {
+                        "$set": {
+                            "myEvents" : myEvents
+                        }
                     }
-                }
-                db.users.update_one( {"_id": ObjectId("653098f24157aaba77523ac0")}, update)
+                    db.users.update_one( {"_id": ObjectId(id)}, update)
 
 
-    for event in user["myPostings"]:
-        print("EVENT HERE", event)
-        if(event is not None):
-            event_id = event["id"]
-            event_details = db.event.find_one({"_id": ObjectId(event_id)})
-            print("EVENT DETAILS", event_details)
-            if(event_details is not None):
-                event.update(event_details)
-            else:
-                myPostings = [event for event in myPostings if event.get("id") != ObjectId(event_id)]
-                updatePostings = {
-                    "$set": {
-                       "myPostings" : myPostings
-                }
-                }
-                db.users.update_one({"_id": ObjectId("653098f24157aaba77523ac0")}, updatePostings)
+        for event in user["myPostings"]:
+            print("EVENT HERE", event)
+            if(event is not None):
+                event_id = event["id"]
+                event_details = db.event.find_one({"_id": ObjectId(event_id)})
+                print("EVENT DETAILS", event_details)
+                if(event_details is not None):
+                    event.update(event_details)
+                else:
+                    myPostings = [event for event in myPostings if event.get("id") != ObjectId(event_id)]
+                    updatePostings = {
+                        "$set": {
+                        "myPostings" : myPostings
+                    }
+                    }
+                    db.users.update_one({"_id": ObjectId(id)}, updatePostings)
 
-                print("THERE IS NOTHING HERE: DELETE FROM ARRAY")
+                    print("THERE IS NOTHING HERE: DELETE FROM ARRAY")
 
-    return render_template("profile.html", user=user)
+        return render_template("profile.html", user=user)
+    else:
+        return redirect(url_for("loading"))
+    
 
 
 @app.route("/edit_user_info/<user_id>", methods=["GET", "POST", "PUT"])
 def editUser(user_id):
-    user = db.users.find_one(
-        {"_id": ObjectId("653098f24157aaba77523ac0")}
-    )  # TODO : NEED TO RETRIEVE CURRENT USER FROM SESSION
+    print("EDIT USER HELLO")
+    if "userid" in session:
+        id = session["userid"]
+        
+        user = db.users.find_one(
+            {"_id": ObjectId(id)}
+        )  # TODO : NEED TO RETRIEVE CURRENT USER FROM SESSION
+       
+       
 
-    if request.method == "POST" or request.method == "PUT":
-        name = request.form.get("fname")
-        email = request.form.get("femail")
-        password = request.form.get("fpassword")
-        #print("helloooo")
-        #print(name, " ", email, " ", password)
-        #print(user.get("_id"))
-        #print("sec", user)
-        myquery = {"_id":ObjectId(user.get("_id"))}
-        #print("before doc")
-        doc = {
+        if request.method == "POST" or request.method == "PUT":
+            name = request.form.get("fname")
+            email = request.form.get("femail")
+            password = request.form.get("fpassword")
+            
+            myquery = {"_id":ObjectId(user.get("_id"))}
+            #print("before doc")
+            doc = {
 
-            "$set":
-               { 
-                "name": name, 
-                "email": email, 
-                "password": password
-               }
-                
-        }
+                "$set":
+                { 
+                    "name": name, 
+                    "email": email, 
+                    "password": password
+                }
+                    
+            }
 
-        #print(doc)
-        db.users.update_one(myquery,doc)
+            #print(doc)
+            db.users.update_one(myquery,doc)
 
-        return redirect(url_for("show_profile"))
-
-    return render_template("edit_user.html", user=user)
+            return redirect(url_for("show_profile"))
+        
+       
+        return render_template("edit_user.html",user_id=user.get("_id"),user=user)
+        
+    else:
+        return redirect(url_for("loading"))
 
 
 @app.route('/editPosting/<post_id>', methods=["GET", "POST", "PUT"])

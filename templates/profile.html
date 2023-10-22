@@ -9,6 +9,7 @@
 
 <div class="box">
   
+    <button>logout</button>
 
     <div class="labels">
         <h3>Perosnal Info</h3>
@@ -51,8 +52,6 @@
         <a href ="{{url_for('delete',user_id=user._id,event_id=event._id)}}">       
             <button class="deleteBtn">delete</button>
         </a>
-
-
     
     </div>
     {% endfor %}
