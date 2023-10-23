@@ -115,6 +115,8 @@ def processRegistration():
 
     # Create an account in the database
     newAccount = {"email": email, "name": username, "password": password,"myEvents":[],"myPostings":[]}
+    #newAccount = {"email": email, "name": username, "password": password,"myEvents":[{"_id":ObjectId("652f5ec73c5916795f01da0f")},{"_id":ObjectId("6530987ae3a691c4c135fd17")}],"myPostings":[]}
+
     db.users.insert_one(newAccount)
 
     #Success -> orward user to the log in page
@@ -347,12 +349,15 @@ def delete(user_id, event_id):
         #print("NEW PRINTS!")
         
         print("BEFORE: MY EVENTS",myEvents)
+        print()
+        print()
+        print(event_id)
         
         #print(myPostings)
 
-        #my events -> remove from list ONLY
+       
     
-        myEvents = [event for event in myEvents if event.get("id") != ObjectId(event_id)]
+        myEvents = [event for event in myEvents if event.get("_id") != ObjectId(event_id)]
         print("After",myEvents)
 
         update = {
@@ -372,12 +377,15 @@ def delete(user_id, event_id):
 
         obj = False # a flag that indicates whether or not we need to delete from database
         for i in range(len(myPostings)):
-            if(myPostings[i]['id'] == ObjectId(event_id)):
+            if(myPostings[i]['_id'] == ObjectId(event_id)):
                 obj = True
                 break
 
+         #my events -> remove from list ONLY
+        #print(myPostings[0].get("_id") != event_id)
+        #print(myPostings[1].get("_id") != event_id)
         # remove from array
-        myPostings = [event for event in myPostings if event.get("id") != ObjectId(event_id)]
+        myPostings = [event for event in myPostings if event.get("_id") != ObjectId(event_id)]
 
         
         updatePostings = {
