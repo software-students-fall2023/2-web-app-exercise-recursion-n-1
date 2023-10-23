@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
  {%block content %}
  <header>
    <div id="myNav" class="overlay">
@@ -15,7 +16,7 @@
 </header>
 
  <div class="editing">
-    <form method="post" action="{{url_for('editPosting',post_id = posting._id)}}">
+    <form class="edit-post" method="post" action="{{url_for('editPosting',post_id = posting._id)}}">
      
       <label for="eventName">Event Name:</label>
      <input type="text" id="eventName" name="eventName" value="{{posting.eventName}}" >
@@ -45,7 +46,7 @@
         <label for="numOfPpl">Number of Attendees:</label>
         <input type="number" id="numOfPpl" name="numOfPpl" value="{{posting.numOfPpl}}" >
         <br/>
-        <button class="post-btn">Post</button>
+        <button class="edit-post-btn">Post</button>
     </form>
   </div>
 

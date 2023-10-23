@@ -14,6 +14,7 @@ from pymongo import MongoClient
 import os
 import dotenv
 from dotenv import load_dotenv
+from datetime import datetime
 from db import db
 import sys
 
@@ -124,8 +125,9 @@ def processRegistration():
         return render_template("register.html", noPasswordMatch=True)
 
     # Create an account in the database
-    #newAccount = {"email": email, "name": username, "password": password,"myEvents":[],"myPostings":[]}
-    newAccount = {"email": email, "name": username, "password": password,"myEvents":[{"_id":ObjectId("6535c7779d05c736740705d6")},{"_id": ObjectId("6535b3a3c6a294db15064818")}],"myPostings":[]}
+    newAccount = {"email": email, "name": username, "password": password,"myEvents":[],"myPostings":[]}
+    #newAccount = {"email": email, "name": username, "password": password,"myEvents":[{"_id":ObjectId("652f5ec73c5916795f01da0f")},{"_id":ObjectId("6530987ae3a691c4c135fd17")}],"myPostings":[]}
+
     db.users.insert_one(newAccount)
 
     return render_template("login.html")
@@ -197,14 +199,16 @@ def add_event():
     if request.method == "POST":
         event_name = request.form.get("eventName")
         organizer = request.form.get("organizer")
-        date = request.form.get("date")
-        time = request.form.get("time")
+        date = request.form.get('date')
+        time = request.form.get('time')
         point_of_contact = request.form.get("pointOfContact")
         location = request.form.get("location")
         description = request.form.get("description")
-        capacity = request.form.get("capacity")
+        capacity = int(request.form.get("capacity"))
+
         new_event = {
             "eventName": event_name,
+            "created_at": datetime.now(),
             "organizer": organizer,
             "date": date,
             "time": time,
@@ -221,8 +225,6 @@ def add_event():
         db.users.update_one({"_id": ObjectId(id)}, {"$set": {"myPostings": user_postings}})
         return redirect(url_for("event"))
     return render_template("add_event.html",user=user)
-    
-    
 
 
 @app.route("/profile")
@@ -373,12 +375,15 @@ def delete(user_id, event_id):
         #print("NEW PRINTS!")
         
         print("BEFORE: MY EVENTS",myEvents)
+        print()
+        print()
+        print(event_id)
         
         #print(myPostings)
 
-        #my events -> remove from list ONLY
+       
     
-        myEvents = [event for event in myEvents if event.get("id") != ObjectId(event_id)]
+        myEvents = [event for event in myEvents if event.get("_id") != ObjectId(event_id)]
         print("After",myEvents)
 
         update = {
@@ -398,12 +403,15 @@ def delete(user_id, event_id):
 
         obj = False # a flag that indicates whether or not we need to delete from database
         for i in range(len(myPostings)):
-            if(myPostings[i]['id'] == ObjectId(event_id)):
+            if(myPostings[i]['_id'] == ObjectId(event_id)):
                 obj = True
                 break
 
+         #my events -> remove from list ONLY
+        #print(myPostings[0].get("_id") != event_id)
+        #print(myPostings[1].get("_id") != event_id)
         # remove from array
-        myPostings = [event for event in myPostings if event.get("id") != ObjectId(event_id)]
+        myPostings = [event for event in myPostings if event.get("_id") != ObjectId(event_id)]
 
         
         updatePostings = {
