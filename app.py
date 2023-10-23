@@ -23,6 +23,8 @@ app.secret_key = os.urandom(24)
 if os.getenv("FLASK_ENV", "development") == "development":
     app.debug = True
 
+
+
 @app.route("/")
 def loading():
     if "userid" in session:
@@ -112,8 +114,8 @@ def processRegistration():
          return render_template("register.html", noPasswordMatch=True)
 
     # Create an account in the database
-    newAccount = {"email": email, "name": username, "password": password,"myEvents":[],"myPostings":[]}
-    #newAccount = {"email": email, "name": username, "password": password,"myEvents":[{"id":ObjectId("653094223097ad79b94fea63")},{"id": ObjectId("652f5ec73c5916795f01da0f")}],"myPostings":[{"id":ObjectId("653596008012ce4175f07742")},{"id":ObjectId("653596268012ce4175f07743")}]}
+    #newAccount = {"email": email, "name": username, "password": password,"myEvents":[],"myPostings":[]}
+    newAccount = {"email": email, "name": username, "password": password,"myEvents":[{"id":ObjectId("6535b980d0959b1abdcffe62")},{"id": ObjectId("653094223097ad79b94fea63")}],"myPostings":[{"id":ObjectId("65309856e3a691c4c135fd16")}]}
     db.users.insert_one(newAccount)
 
     #Success -> orward user to the log in page
@@ -135,6 +137,8 @@ def event():
     print(session.get('email', "example@example.com")) 
 
     if "userid" in session:
+        id = session["userid"]
+        user = db.users.find_one({"_id":ObjectId(id)})
         if request.method == "POST":
             search_query = request.form.get("search_query")
             search_option = request.form.get("search_option")
@@ -153,7 +157,7 @@ def event():
             docs = db["event"].find(query).sort("created_at", -1)
         else:
             docs = db["event"].find({}).sort("created_at", -1)
-        return render_template("events.html", docs=docs)
+        return render_template("events.html", docs=docs, user=user)
     else:
         return redirect(url_for("loading"))
 
@@ -161,6 +165,7 @@ def event():
 @app.route("/add_event", methods=["GET", "POST"])
 def add_event():
     if "userid" in session:
+        user = db.users.find_one({"_id":ObjectId(session["userid"])})
         if request.method == "POST":
             event_name = request.form.get("eventName")
             organizer = request.form.get("organizer")
@@ -184,7 +189,7 @@ def add_event():
             db["event"].insert_one(new_event)
             return redirect(url_for("event"))
 
-        return render_template("add_event.html")
+        return render_template("add_event.html",user=user)
     else:
         return redirect(url_for("loading"))
 
@@ -289,7 +294,7 @@ def editUser(user_id):
 @app.route('/editPosting/<post_id>', methods=["GET", "POST", "PUT"])
 def editPosting(post_id):
     if "userid" in session:
-        
+        user = db.users.find_one({"_id":ObjectId(session["userid"])})
         posting = db.event.find_one({"_id":ObjectId(post_id)})
         print("POSTING" , posting)
         if(request.method == "POST" or request.method == "POST"):
@@ -318,7 +323,7 @@ def editPosting(post_id):
 
             db.event.update_one({"_id":ObjectId(post_id)}, doc)
             return redirect(url_for('show_profile'))
-        return render_template('edit_posting.html',posting=posting)
+        return render_template('edit_posting.html',posting=posting,user=user)
     else:
         return redirect(url_for('loading'))
     
