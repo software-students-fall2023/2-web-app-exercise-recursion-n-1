@@ -2,7 +2,7 @@
  {%block content %}
 
 <div class="editing">
-  <h2>Persnal Info</h2>
+  <h2>Personal Info</h2>
   <form method="post" action="{{url_for('editUser',user_id = user._id)}}">
     <label for="name"> username</label><br />
     <input type="text" id="name" name="fname" value="{{user.name}}" /><br />
