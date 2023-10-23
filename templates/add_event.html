@@ -32,15 +32,12 @@
         <textarea id="description" name="description" rows="4" required></textarea>
         <br/>
         <br/>
-        <label for="numOfPpl">Number of Attendees:</label>
-        <input type="number" id="numOfPpl" name="numOfPpl" required>
+        <label for="capacity">Capacity:</label>
+        <input type="number" id="capacity" name="capacity" required min="1">
         <br/>
         <br/>
         <button class="post-btn">Post</button>
       </form>
-      {% if error_message %}
-      <div style="color: red;">{{ error_message }}</div>
-      {% endif %}
     </div>
 
 {% endblock %}

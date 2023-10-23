@@ -61,7 +61,6 @@ def registerForm():
     return render_template(
         "register.html", noPasswordMatch=noPasswordMatch, userExists=userExists
     )
-
     return render_template("register.html", noPasswordMatch = noPasswordMatch, userExists=userExists )
 
 
@@ -149,11 +148,6 @@ def logout():
 
 @app.route("/events", methods=["GET", "POST"])
 def event():
-    print(session.get("email", "example@example.com"))
-
-    #example of pulling email from the session, example@example.com is the default if no email is found
-    print(session.get('email', "example@example.com")) 
-
     if "userid" in session:
         if request.method == "POST":
             search_query = request.form.get("search_query")
@@ -180,6 +174,10 @@ def event():
 
 @app.route("/add_event", methods=["GET", "POST"])
 def add_event():
+    if "userid" not in session:
+        return redirect(url_for("loading"))
+    id = session["userid"]
+    user = db.users.find_one({"_id": ObjectId(id)})
     if request.method == "POST":
         event_name = request.form.get("eventName")
         organizer = request.form.get("organizer")
@@ -189,10 +187,6 @@ def add_event():
         location = request.form.get("location")
         description = request.form.get("description")
         capacity = request.form.get("capacity")
-        if capacity < 0:
-            error_message = "Event capacity must be a positive number."
-        else:
-            error_message = ""
         new_event = {
             "eventName": event_name,
             "organizer": organizer,
@@ -205,66 +199,38 @@ def add_event():
             "numOfPpl": 0,
         }
         db["event"].insert_one(new_event)
-        """
-        db["users"].find({id: session["userid"]}).update(
-            
-        )
-        """
-        return redirect(url_for("event"), error_message=error_message)
+        event_id= ObjectId(new_event["_id"])
+        user_postings= user.get("myPostings", [])
+        user_postings.append({"_id": ObjectId(event_id)})
+        db.users.update_one({"_id": ObjectId(id)}, {"$set": {"myPostings": user_postings}})
+        return redirect(url_for("event"))
     return render_template("add_event.html")
-    if "userid" in session:
-        if request.method == "POST":
-            event_name = request.form.get("eventName")
-            organizer = request.form.get("organizer")
-            date = request.form.get("date")
-            time = request.form.get("time")
-            point_of_contact = request.form.get("pointOfContact")
-            location = request.form.get("location")
-            description = request.form.get("description")
-            num_of_ppl = request.form.get("numOfPpl")
-
-            new_event = {
-                "eventName": event_name,
-                "organizer": organizer,
-                "date": date,
-                "time": time,
-                "pointOfContact": point_of_contact,
-                "location": location,
-                "description": description,
-                "numOfPpl": num_of_ppl,
-            }
-            db["event"].insert_one(new_event)
-            return redirect(url_for("event"))
-
-        return render_template("add_event.html")
-    else:
-        return redirect(url_for("loading"))
 
 
 @app.route("/rsvp", methods=["POST"])
 def rsvp():
     if "userid" not in session:
         return redirect(url_for("loading"))
+
     id = session["userid"]
     user = db.users.find_one({"_id": ObjectId(id)})
     event_id = request.form.get("event_id")
     events_collection = db["event"]
     event = events_collection.find_one({"_id": ObjectId(event_id)})
-
-    if not user:
-        error_message = "User not found."
-    elif not event:
-        error_message = "Event not found."
-    elif event["numOfPpl"] >= event["capacity"]:
-        error_message = "Event has reached capacity"
-    elif any(e["_id"] == ObjectId(event_id) for e in user["myEvents"]):
-        error_message = "Event not found."
+    if event["numOfPpl"] >= event["capacity"]:
+        print("FULL")
+        #display error
+    elif any(str(e["_id"]) == event_id for e in user.get("myEvents", [])):
+         print("already RSVP")
+        #display error
     else:
         events_collection.update_one({"_id": ObjectId(event_id)}, {"$inc": {"numOfPpl": 1}})
         user_events = user.get("myEvents", [])
         user_events.append({"_id": ObjectId(event_id)})
         db.users.update_one({"_id": ObjectId(id)}, {"$set": {"myEvents": user_events}})
-    return redirect(url_for("event"), error_message)
+    
+    return redirect(url_for("event"))
+
 
 
 
