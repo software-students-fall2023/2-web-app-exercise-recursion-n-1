@@ -16,5 +16,7 @@ To create a forum that allows users to join groups for volunteer activities.
 
 ## Task boards
 
-[TaskBoard](https://github.com/orgs/software-students-fall2023/projects/24/views/2?filterQuery=label%3Atask)
+[Team Recursion(n-1) - Sprint1](https://github.com/orgs/software-students-fall2023/projects/24/views/2?filterQuery=label%3Atask)
+
+[Team Recursion(n-1) - Sprint2](https://github.com/orgs/software-students-fall2023/projects/68/views/2)
 
