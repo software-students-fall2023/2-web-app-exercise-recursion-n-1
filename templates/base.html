@@ -8,9 +8,29 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
+   
 </head>
+
 <body>
     <div class="container">
+        <a href="{{url_for('loading')}}">
+            <header>
+                 <h2>Volunteer Hub</h2>
+                 {% if user %}
+                 <div id="myNav" class="overlay">
+                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                    <div class="overlay-content">
+                      <a href="/events">Event</a>
+                      <a href="/profile">Profile</a>
+                      <a href="/add_event"> Create Event</a>
+                      <a href="/logout">Log Out</a>
+                    </div>
+                  </div>
+                  <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
+                 {% endif %}
+            </header>
+           
+        </a>
         <main>
             {% block content %}
             {% endblock %}
@@ -18,5 +38,15 @@
         </main>
     </div>
    
+    <script>
+        function openNav() {
+          document.getElementById("myNav").style.width = "100%";
+        }
+        
+        function closeNav() {
+          document.getElementById("myNav").style.width = "0%";
+        }
+</script>
+
 </body>
 </html>

@@ -8,10 +8,6 @@
 </div>
 
 <div class="box">
-  
-    <a href="{{url_for('logout')}}">
-    <button>logout</button>
-    </a>
 
     <div class="labels">
         <h3>Perosnal Info</h3>
@@ -88,6 +84,8 @@
         <a href="{{url_for('editPosting',post_id=event._id)}}">
         <button class="editBtn">Edit</button>
         </a>
+
+        <br/>
 
         <a href ="{{url_for('delete',user_id=user._id,event_id=event._id)}}">       
         <button class="deleteBtn">Delete</button>
