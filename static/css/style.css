@@ -331,7 +331,7 @@ Edit Posting
   color: #333;
 }
 
-.edit-post-btn{
+.edit-post-b{
   background-color: #bd37a0; 
   color: #fff; 
   border: none; 
@@ -493,7 +493,7 @@ select[name="search_option"] {
   font-size: 18px;
 }
 .rsvp-btn {
-  background-color: #bd37a0; 
+  background-color: #1e5c28; 
   color: #fff; 
   border: none; 
   margin-top: 10px;
