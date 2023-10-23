@@ -19,32 +19,32 @@
     <form class="edit-post" method="post" action="{{url_for('editPosting',post_id = posting._id)}}">
      
       <label for="eventName">Event Name:</label>
-     <input type="text" id="eventName" name="eventName" value="{{posting.eventName}}" >
+     <input type="text" id="eventName" name="eventName" value="{{posting.eventName}}" required>
         <br/>
 
      <label for="organizer">Organizer:</label>
-    <input type="text" id="organizer" name="organizer" value="{{posting.organizer}}" >
+    <input type="text" id="organizer" name="organizer" value="{{posting.organizer}}" required>
     <br/>
 
      <label for="date">Date:</label>
-     <input type="date" id="date" name="date" value="{{posting.date}}">
+     <input type="date" id="date" name="date" value="{{posting.date}}" required>
     <br/>
         
     <label for="time">Time:</label>
-    <input type="time" id="time" name="time" value="{{posting.time}}" >
+    <input type="time" id="time" name="time" value="{{posting.time}}" required>
         <br/>
 
         <label for="pointOfContact">Contact:</label>
-        <input type="email" id="pointOfContact" name="pointOfContact" value="{{posting.pointOfContact}}">
+        <input type="email" id="pointOfContact" name="pointOfContact" value="{{posting.pointOfContact}}" required>
         <br/>
         <label for="location">Location:</label>
-        <input type="text" id="location" name="location" value="{{posting.location}}" >
+        <input type="text" id="location" name="location" value="{{posting.location}}" required >
         <br/>
         <label for="description">Description:</label>
-        <input type="text" id="description" name="description" rows="4"  value="{{posting.description}}" >
+        <input type="text" id="description" name="description" rows="4"  value="{{posting.description}}"required >
         <br/>
         <label for="numOfPpl">Capacity</label>
-        <input type="number" id="numOfPpl" name="capacity" value="{{posting.capacity}}" >
+        <input type="number" id="numOfPpl" name="capacity" value="{{posting.capacity}}" required min="1">
         <br/>
         <button class="edit-post-btn">Post</button>
     </form>
