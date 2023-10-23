@@ -164,34 +164,39 @@ def event():
 
 @app.route("/add_event", methods=["GET", "POST"])
 def add_event():
-    if "userid" in session:
-        user = db.users.find_one({"_id":ObjectId(session["userid"])})
-        if request.method == "POST":
-            event_name = request.form.get("eventName")
-            organizer = request.form.get("organizer")
-            date = request.form.get("date")
-            time = request.form.get("time")
-            point_of_contact = request.form.get("pointOfContact")
-            location = request.form.get("location")
-            description = request.form.get("description")
-            num_of_ppl = request.form.get("numOfPpl")
-
-            new_event = {
-                "eventName": event_name,
-                "organizer": organizer,
-                "date": date,
-                "time": time,
-                "pointOfContact": point_of_contact,
-                "location": location,
-                "description": description,
-                "numOfPpl": num_of_ppl,
-            }
-            db["event"].insert_one(new_event)
-            return redirect(url_for("event"))
-
-        return render_template("add_event.html",user=user)
-    else:
+    if "userid" not in session:
         return redirect(url_for("loading"))
+    id = session["userid"]
+    user = db.users.find_one({"_id": ObjectId(id)})
+    if request.method == "POST":
+        event_name = request.form.get("eventName")
+        organizer = request.form.get("organizer")
+        date = request.form.get("date")
+        time = request.form.get("time")
+        point_of_contact = request.form.get("pointOfContact")
+        location = request.form.get("location")
+        description = request.form.get("description")
+        capacity = request.form.get("capacity")
+        new_event = {
+            "eventName": event_name,
+            "organizer": organizer,
+            "date": date,
+            "time": time,
+            "pointOfContact": point_of_contact,
+            "location": location,
+            "description": description,
+            "capacity": capacity,
+            "numOfPpl": 0,
+        }
+        db["event"].insert_one(new_event)
+        event_id= ObjectId(new_event["_id"])
+        user_postings= user.get("myPostings", [])
+        user_postings.append({"_id": ObjectId(event_id)})
+        db.users.update_one({"_id": ObjectId(id)}, {"$set": {"myPostings": user_postings}})
+        return redirect(url_for("event"))
+    return render_template("add_event.html",user=user)
+    
+    
 
 
 @app.route("/profile")
@@ -227,7 +232,7 @@ def show_profile():
         for event in user["myPostings"]:
             print("EVENT HERE", event)
             if(event is not None):
-                event_id = event["id"]
+                event_id = event["_id"]
                 event_details = db.event.find_one({"_id": ObjectId(event_id)})
                 print("EVENT DETAILS", event_details)
                 if(event_details is not None):

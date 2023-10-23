@@ -16,6 +16,7 @@
     </select>
     <button type="submit" class="search-btn">Search</button>
   </form>
+  
   <form action="{{ url_for('add_event') }}" method="get">
     <button class="add-btn">Post Event</button>
   </form>
@@ -39,6 +40,9 @@
       </p>
       <p class="description">
         <span class="bold-text">Description:</span> {{ doc.description }}
+      </p>
+      <p class="capacity">
+        <span class="bold-text">Capacity:</span> {{ doc.capacity}}
       </p>
       <p class="numOfPpl">
         <span class="bold-text">Attendees:</span> {{ doc.numOfPpl }}

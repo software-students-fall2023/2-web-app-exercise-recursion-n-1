@@ -283,7 +283,7 @@ select[name="search_option"] {
   transition: 0.3s;
 }
 
-.author, .when, .contact, .location, .description, .numOfPpl {
+.author, .when, .contact, .location, .description, .numOfPpl, .capacity {
   text-align: left;
   font-size: 16px;
   margin: 5px 0;
