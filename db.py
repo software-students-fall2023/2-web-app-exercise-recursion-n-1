@@ -35,10 +35,11 @@ doc1= db.users.find_one({"name": "lemon"})
 print(doc1["email"])
 """
 
-db.users.delete_many({"name":"lemon"})
-lemon_filter = {"name" : "lemon"}
+#db.users.delete_many({"name":"lemon"})
+#lemon_filter = {"name" : "lemon"}
 #db.users.delete_many({})
-
+#db.users.delete_many({})
+#db.event.delete_many({})
 
 
 

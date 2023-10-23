@@ -129,8 +129,11 @@ def processRegistration():
     #newAccount = {"email": email, "name": username, "password": password,"myEvents":[{"_id":ObjectId("652f5ec73c5916795f01da0f")},{"_id":ObjectId("6530987ae3a691c4c135fd17")}],"myPostings":[]}
 
     db.users.insert_one(newAccount)
+    user = db.users.find_one({"email":email})
+    session["userid"] = str(user["_id"])
+    session["email"] = email
 
-    return render_template("login.html")
+    return redirect(url_for("event"))
 
 @app.route("/logout")
 def logout():
@@ -381,9 +384,18 @@ def delete(user_id, event_id):
         
         #print(myPostings)
 
-       
-    
-        myEvents = [event for event in myEvents if event.get("_id") != ObjectId(event_id)]
+        for i in range(len(myEvents)):
+            if(myEvents[i]["_id"] == ObjectId(event_id)):
+                print("HOHO",myEvents[i]["_id"])
+                db.event.update_one({"_id":ObjectId(myEvents[i]["_id"])},
+                    {"$inc": {"numOfPpl": -1}}
+                )
+                myEvents.remove(myEvents[i])
+                break
+
+
+
+        #myEvents = [event for event in myEvents if event.get("_id") != ObjectId(event_id)]
         print("After",myEvents)
 
         update = {
