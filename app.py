@@ -115,7 +115,7 @@ def processRegistration():
 
     # Create an account in the database
     #newAccount = {"email": email, "name": username, "password": password,"myEvents":[],"myPostings":[]}
-    newAccount = {"email": email, "name": username, "password": password,"myEvents":[{"id":ObjectId("6535b980d0959b1abdcffe62")},{"id": ObjectId("653094223097ad79b94fea63")}],"myPostings":[{"id":ObjectId("65309856e3a691c4c135fd16")}]}
+    newAccount = {"email": email, "name": username, "password": password,"myEvents":[{"_id":ObjectId("6535c7779d05c736740705d6")},{"_id": ObjectId("6535b3a3c6a294db15064818")}],"myPostings":[]}
     db.users.insert_one(newAccount)
 
     #Success -> orward user to the log in page
@@ -214,12 +214,12 @@ def show_profile():
         for event in user["myEvents"]:
             if(event is not None):
                 print(event)
-                event_id = event["id"]
+                event_id = event["_id"]
                 event_details = db.event.find_one({"_id": ObjectId(event_id)})
                 if(event_details is not None):
                     event.update(event_details)
                 else:
-                    myEvents = [event for event in myEvents if event.get("id") != ObjectId(event_id)]
+                    myEvents = [event for event in myEvents if event.get("_id") != ObjectId(event_id)]
                     print("After",myEvents)
                     update = {
                         "$set": {
@@ -238,7 +238,7 @@ def show_profile():
                 if(event_details is not None):
                     event.update(event_details)
                 else:
-                    myPostings = [event for event in myPostings if event.get("id") != ObjectId(event_id)]
+                    myPostings = [event for event in myPostings if event.get("_id") != ObjectId(event_id)]
                     updatePostings = {
                         "$set": {
                         "myPostings" : myPostings
@@ -399,25 +399,3 @@ def delete(user_id, event_id):
        return redirect(url_for('loading'))
 
 
-######
-# TO BE DELETED AFTER !! THIS IS FOR THE PURPOSE OF CREATING USER DATA
-# SOME  DATA HERE IS HARD CODED
-@app.route("/add_user", methods=["POST"])
-def createUser():
-    doc = {
-        "name": "snow",
-        "email": "snow@gmail.com",
-        "password": "123&snow",
-        "myEvents": [
-            {"id": ObjectId("652f5ec73c5916795f01da0f")},
-            {"id": ObjectId("653094223097ad79b94fea63")},
-            {"id": ObjectId('65309856e3a691c4c135fd16')}
-        ],
-        "myPostings": [
-            {"id": ObjectId("6530987ae3a691c4c135fd17")},
-            ],
-    }
-
-    db.users.insert_one(doc)
-
-    return doc
