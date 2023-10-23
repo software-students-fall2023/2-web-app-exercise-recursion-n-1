@@ -167,6 +167,29 @@ def event():
     else:
         return redirect(url_for("loading"))
 
+@app.route("/rsvp", methods=["POST"])
+def rsvp():
+    if "userid" not in session:
+        return redirect(url_for("loading"))
+
+    id = session["userid"]
+    user = db.users.find_one({"_id": ObjectId(id)})
+    event_id = request.form.get("event_id")
+    events_collection = db["event"]
+    event = events_collection.find_one({"_id": ObjectId(event_id)})
+    if event["numOfPpl"] >= event["capacity"]:
+        print("FULL")
+        #display error
+    elif any(str(e["_id"]) == event_id for e in user.get("myEvents", [])):
+         print("already RSVP")
+        #display error
+    else:
+        events_collection.update_one({"_id": ObjectId(event_id)}, {"$inc": {"numOfPpl": 1}})
+        user_events = user.get("myEvents", [])
+        user_events.append({"_id": ObjectId(event_id)})
+        db.users.update_one({"_id": ObjectId(id)}, {"$set": {"myEvents": user_events}})
+    
+    return redirect(url_for("event"))
 
 @app.route("/add_event", methods=["GET", "POST"])
 def add_event():

@@ -17,7 +17,6 @@ header {
   z-index: 1000; /* Ensure it appears above other content */
 }
 
-
 body {
   min-height: 100vh;
   width: 100%;
@@ -284,7 +283,6 @@ select[name="search_option"] {
 }
 
 .author, .when, .contact, .location, .description, .numOfPpl, .capacity {
-.author, .when, .contact, .location, .description, .numOfPpl, .capacity {
   text-align: left;
   font-size: 16px;
   margin: 5px 0;
@@ -303,22 +301,35 @@ select[name="search_option"] {
   font-weight: bold;
   font-size: 18px;
 }
+.rsvp-btn {
+  background-color: #bd37a0; 
+  color: #fff; 
+  border: none; 
+  margin-top: 10px;
+  padding: 10px 20px; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  font-size: 16px; 
+}
+
+.rsvp-btn:hover {
+  background-color: #a55ca5; /
+}
 
 /* nav */
 header{
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  
-
 }
+
 
 .overlay-content {
   position: relative;
-  top: 25%; /* 25% from the top */
-  width: 100%; /* 100% width */
-  text-align: center; /* Centered text/links */
-  margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
+  top: 25%; 
+  width: 100%; 
+  text-align: center;
+  margin-top: 30px; 
 }
 
 .overlay a {
@@ -344,14 +355,13 @@ header{
 }
 
 .overlay {
-  /* Height & width depends on how you want to reveal the overlay (see JS below) */   
   height: 100%;
   width: 0;
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  position: fixed; 
+  z-index: 1; 
   left: 0;
   top: 0;
-  background-color: rgb(0,0,0); /* Black fallback color */
+  background-color: rgb(0,0,0); 
   background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
   overflow-x: hidden; /* Disable horizontal scroll */
   transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
