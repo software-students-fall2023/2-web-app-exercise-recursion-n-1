@@ -125,8 +125,7 @@ def processRegistration():
         return render_template("register.html", noPasswordMatch=True)
 
     # Create an account in the database
-    #newAccount = {"email": email, "name": username, "password": password,"myEvents":[],"myPostings":[]}
-    newAccount = {"email": email, "name": username, "password": password,"myEvents":[{"_id":ObjectId("6535c7779d05c736740705d6")},{"_id": ObjectId("6535b3a3c6a294db15064818")}],"myPostings":[]}
+    newAccount = {"email": email, "name": username, "password": password,"myEvents":[],"myPostings":[]}
     db.users.insert_one(newAccount)
 
     return render_template("login.html")
