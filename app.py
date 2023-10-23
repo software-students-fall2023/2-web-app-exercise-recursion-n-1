@@ -181,6 +181,11 @@ def rsvp():
     events_collection = db["event"]
     event = events_collection.find_one({"_id": ObjectId(event_id)})
     docs = db["event"].find({}).sort("created_at", -1)
+
+    print(event)
+    #print("number of people", event["numOfPpl",type(event["numOfPpl"])])
+    #print("capacity",event["capacity",type(event["capacity"])])
+
     if event["numOfPpl"] >= event["capacity"]:
         return render_template("events.html",docs=docs, capacity_overload=True, specific_event_id=ObjectId(event_id))
     elif any(str(e["_id"]) == event_id for e in user.get("myEvents", [])):
@@ -318,22 +323,11 @@ def editUser(user_id):
 
 @app.route("/editPosting/<post_id>", methods=["GET", "POST", "PUT"])
 def editPosting(post_id):
-    posting = db.event.find_one({"_id": ObjectId(post_id)})
-    print("POSTING", posting)
-    if request.method == "POST" or request.method == "POST":
-        eventName = request.form.get("eventName")
-        organizer = request.form.get("organizer")
-        date = request.form.get("date")
-        time = request.form.get("time")
-        pointOfContact = request.form.get("pointOfContact")
-        description = request.form.get("description")
-        location = request.form.get("location")
-        numOfPpl = request.form.get("numOfPpl")
     if "userid" in session:
         user = db.users.find_one({"_id":ObjectId(session["userid"])})
         posting = db.event.find_one({"_id":ObjectId(post_id)})
         print("POSTING" , posting)
-        if(request.method == "POST" or request.method == "POST"):
+        if(request.method == "PUT" or request.method == "POST"):
             eventName = request.form.get("eventName")
             organizer = request.form.get("organizer")
             date = request.form.get("date")
@@ -341,7 +335,7 @@ def editPosting(post_id):
             pointOfContact = request.form.get("pointOfContact")
             description = request.form.get("description")
             location = request.form.get("location")
-            numOfPpl = request.form.get("numOfPpl")
+            numOfPpl = int(request.form.get("capacity"))
 
             doc = {
                 "$set":
@@ -353,7 +347,7 @@ def editPosting(post_id):
                 "pointOfContact": pointOfContact,
                 "description": description,
                 "location":location,
-                "numOfPpl":numOfPpl
+                "capacity":numOfPpl,
                 }
             }
 
