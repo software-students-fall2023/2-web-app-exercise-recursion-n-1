@@ -2,21 +2,40 @@
 Styling 
 */
 
+
+
 header {
   display: flex;
   flex-direction: row;
   padding:0;
-  justify-content: center;
+  margin: 0;
+  justify-content: space-between;
   align-items: center;
   font-size: 20px;
+  font-family: 'Roboto', sans-serif;
   color: #ffffff;
-  background-color: hsl(30, 3%, 42%);
-  position: fixed; /* Add this line to make the header fixed */
-  top: 0; /* Stick it to the top */
-  width: 100%; /* Make it full-width */
-  z-index: 1000; /* Ensure it appears above other content */
+  background-color: hsl(30, 1%, 28%);
+  position: fixed; 
+  top: 0; 
+  width: 100%; 
+  z-index: 1000; 
 }
 
+header h2{
+  font-size: 23px;
+  margin-right: 135px;
+}
+
+.header-button{
+  background-color: #78787f;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-left: 10px;
+}
 
 body {
   min-height: 100vh;
@@ -105,11 +124,11 @@ form[action="/login"], form[action="/register"]{
 }
 
 .form-login{
-  margin: 145px auto 0 0;
+  margin: 80px auto 0 0;
 }
 
 .form-register{
-  margin: 70px auto 0 0;
+  margin: 0px auto 0 0;
 }
 
 .form-login label ,.form-register label {
@@ -139,11 +158,81 @@ form[action="/login"], form[action="/register"]{
 
 .form-login [type="submit"]:hover, .form-register [type="submit"]:hover {
   background: #0056b3;
+}
 
+.go-back-button {
+  position: fixed;
+  top: 10px; /* Adjust the top position as needed */
+  left: 10px; /* Adjust the left position as needed */
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #3240ba;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none; /* Remove underline for anchor element */
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.start-app-name{
+  font-family: 'Roboto', sans-serif;
+  margin-top:60px;
+}
+
+
+/*
+Adding a new event
+*/
+
+.add-event-form{
+  padding: 1.5rem;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  border: 2px solid #ccc;
+  gap: 3px;
+  margin: 0 auto;
+  max-width: 300px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .editing{
-  margin-top:150px
+  margin-top:85px
+}
+
+.editing label {
+  font-weight: bold;
+  text-align: left;
+  font-size: 16px;
+  display: block; /* Display labels on a new line */
+  margin-left: 0;
+  margin-bottom: 0px;
+}
+.editing input[type="text"],
+.editing input[type="date"],
+.editing input[type="time"],
+.editing input[type="email"],
+.editing textarea,
+.editing input[type="number"] {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 0px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.editing .post-btn {
+  background-color: #3240ba;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 15px 30px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 15px;
+  margin-top: 2px;
+  margin-bottom: 0px;
 }
 
 
@@ -168,16 +257,22 @@ profile page
   border-radius: 50%;
 }
 
+
 #personalInfo{
   /* border:1px solid black; */
+  text-align: left;
   max-width: 100%;
-  padding: 40px;
+  padding: 30px;
   margin:20px;
-  margin-top: 150px;
+  margin-top: 0px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
-
 }
+
+#personalInfo h3{
+  text-align: center;
+}
+
 
 #personalInfo:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
@@ -187,12 +282,20 @@ profile page
   margin-top: 10px;
   height: 30px;
   width:50px;
+  background-color: #3240ba;
+  border-radius: 5px; 
+  color: #fff;
+  border: none;
 }
 
 .deleteBtn{
   margin-top: 10px;
   height: 30px;
   width:50px;
+  background-color: #971625;
+  border-radius: 5px; 
+  color: #fff;
+  border: none;
 }
 
 .labels{
@@ -206,6 +309,94 @@ profile page
   /* border:2px solid red; */
   margin-bottom: 20px;;
 }
+
+/*
+Edit Posting
+*/
+
+.edit-post{
+  max-width: 400px;
+  margin: 0 auto; /* Center-align the form */
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+.edit-post label {
+  text-align: left;
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+.edit-post-btn{
+  background-color: #bd37a0; 
+  color: #fff; 
+  border: none; 
+  margin-top: 20px;
+  padding: 10px 20px; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  font-size: 16px; 
+}
+
+.edit-post {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 90%;
+  margin-bottom: 10px;
+}
+
+/*
+Edit user page
+*/
+
+.edit-user{
+  max-width: 400px;
+  margin: 0 auto; /* Center-align the form */
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+.edit-user label {
+  text-align: left;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+.edit-user-button{
+  background-color: #bd37a0; 
+  color: #fff; 
+  border: none; 
+  margin-top: 10px;
+  padding: 10px 20px; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  font-size: 16px; 
+}
+
+.edit-user input[type="text"],
+.edit-user input[type="email"],
+.edit-user input[type="password"]{
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 90%;
+  margin-bottom: 10px;
+}
+
+
+
+
 
 /*
   * Event page styles
@@ -259,7 +450,6 @@ select[name="search_option"] {
   margin-right: 10px; /* Add some space between select and button */
 }
 
-/* Button for searching */
 .search-btn {
   background-color: #3240ba;
   color: #fff;
@@ -274,7 +464,7 @@ select[name="search_option"] {
   background: #0056b3;
 }
 
-/* Styling for each event box */
+
 .event-box {
   padding: 40px;
   margin:20px;
@@ -302,22 +492,29 @@ select[name="search_option"] {
   font-weight: bold;
   font-size: 18px;
 }
-
-/* nav */
-header{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  
-
+.rsvp-btn {
+  background-color: #bd37a0; 
+  color: #fff; 
+  border: none; 
+  margin-top: 10px;
+  padding: 10px 20px; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  font-size: 16px; 
 }
+
+.rsvp-btn:hover {
+  background-color: #a55ca5; /
+}
+
+
 
 .overlay-content {
   position: relative;
-  top: 25%; /* 25% from the top */
-  width: 100%; /* 100% width */
-  text-align: center; /* Centered text/links */
-  margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
+  top: 25%; 
+  width: 100%; 
+  text-align: center;
+  margin-top: 30px; 
 }
 
 .overlay a {
@@ -343,14 +540,13 @@ header{
 }
 
 .overlay {
-  /* Height & width depends on how you want to reveal the overlay (see JS below) */   
   height: 100%;
   width: 0;
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  position: fixed; 
+  z-index: 1; 
   left: 0;
   top: 0;
-  background-color: rgb(0,0,0); /* Black fallback color */
+  background-color: rgb(0,0,0); 
   background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
   overflow-x: hidden; /* Disable horizontal scroll */
   transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */

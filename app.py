@@ -6,7 +6,7 @@ from flask import (
     abort,
     url_for,
     make_response,
-    session
+    session,
 )
 import pymongo
 from bson.objectid import ObjectId
@@ -14,6 +14,7 @@ from pymongo import MongoClient
 import os
 import dotenv
 from dotenv import load_dotenv
+from datetime import datetime
 from db import db
 import sys
 
@@ -32,10 +33,14 @@ def loading():
     else:
         return render_template("index.html", content="Greetings!")
 
+
 # GET REQUESTS FOR LOG IN AND REGISTER
+
 
 @app.route("/login", methods=["GET"])
 def loginForm():
+    # Check if user has just tried to log in and failed vis a vis a passed variable
+    incorrect_login = request.args.get("incorrect_login", False)
     if "userid" in session:
         return redirect(url_for("show_profile")) 
     else:
@@ -44,18 +49,25 @@ def loginForm():
 
         return render_template("login.html", incorrect_login=incorrect_login)
 
+
 @app.route("/register", methods=["GET"])
 def registerForm():
+    noPasswordMatch = request.args.get("noPasswordMatch", False)
+    userExists = request.args.get("userExists", False)
     if "userid" in session:
         return redirect(url_for("show_profile")) 
     else:
         noPasswordMatch = request.args.get('noPasswordMatch', False)
         userExists = request.args.get('userExists', False)
 
-        return render_template("register.html", noPasswordMatch = noPasswordMatch, userExists=userExists )
+    return render_template(
+        "register.html", noPasswordMatch=noPasswordMatch, userExists=userExists
+    )
+    return render_template("register.html", noPasswordMatch = noPasswordMatch, userExists=userExists )
 
 
 # POST REQUESTS FOR LOGIN AND REGISTER
+
 
 @app.route("/login", methods=["POST"])
 def processLogin():
@@ -63,7 +75,7 @@ def processLogin():
     email = request.form["email"]
     password = request.form["password"]
 
-    #Try to match the user entered email with a document in the database
+    # Try to match the user entered email with a document in the database
     getUser = db.users.find_one({"email": email})
 
     match = True
@@ -79,15 +91,14 @@ def processLogin():
     elif getUser["password"] != password:
         print("Password Incorrect")
         return render_template("login.html", incorrect_login=True)
-    
+
     # Success -> log the user in with their account & add COOKIE
     else:
         print("hello session")
-        session['userid'] = str(getUser["_id"])
-        session['email'] = email
+        session["userid"] = str(getUser["_id"])
+        session["email"] = email
         print(session)
-        # print(session.get('email', "example@example.com")) 
-
+        # print(session.get('email', "example@example.com"))
         return redirect(url_for("event"))
 
 
@@ -99,19 +110,19 @@ def processRegistration():
     password = request.form["password"]
     confirmPassword = request.form["confirmPassword"]
 
-    #check the user ented email is unique -> If not route back to register page with message
+    # check the user ented email is unique -> If not route back to register page with message
     getUser = db.users.find_one({"email": email})
 
     match = True
     if getUser == None:
         match = False
 
-    if(match): 
+    if match:
         return render_template("register.html", userExists=True)
 
-    #Check that passwords match -> if not route back to register page with message
-    if(password != confirmPassword): 
-         return render_template("register.html", noPasswordMatch=True)
+    # Check that passwords match -> if not route back to register page with message
+    if password != confirmPassword:
+        return render_template("register.html", noPasswordMatch=True)
 
     # Create an account in the database
     newAccount = {"email": email, "name": username, "password": password,"myEvents":[],"myPostings":[]}
@@ -119,7 +130,6 @@ def processRegistration():
 
     db.users.insert_one(newAccount)
 
-    #Success -> orward user to the log in page
     return render_template("login.html")
 
 @app.route("/logout")
@@ -133,10 +143,6 @@ def logout():
 
 @app.route("/events", methods=["GET", "POST"])
 def event():
-
-    #example of pulling email from the session, example@example.com is the default if no email is found
-    print(session.get('email', "example@example.com")) 
-
     if "userid" in session:
         id = session["userid"]
         user = db.users.find_one({"_id":ObjectId(id)})
@@ -162,6 +168,27 @@ def event():
     else:
         return redirect(url_for("loading"))
 
+@app.route("/rsvp", methods=["POST"])
+def rsvp():
+    if "userid" not in session:
+        return redirect(url_for("loading"))
+    id = session["userid"]
+    user = db.users.find_one({"_id": ObjectId(id)})
+    event_id = request.form.get("event_id")
+    events_collection = db["event"]
+    event = events_collection.find_one({"_id": ObjectId(event_id)})
+    docs = db["event"].find({}).sort("created_at", -1)
+    if event["numOfPpl"] >= event["capacity"]:
+        return render_template("events.html",docs=docs, capacity_overload=True, specific_event_id=ObjectId(event_id))
+    elif any(str(e["_id"]) == event_id for e in user.get("myEvents", [])):
+         print("already RSVP")
+         return render_template("events.html",docs=docs, has_rsvpd=True, specific_event_id=ObjectId(event_id))
+    else:
+        events_collection.update_one({"_id": ObjectId(event_id)}, {"$inc": {"numOfPpl": 1}})
+        user_events = user.get("myEvents", [])
+        user_events.append({"_id": ObjectId(event_id)})
+        db.users.update_one({"_id": ObjectId(id)}, {"$set": {"myEvents": user_events}})
+    return redirect(url_for("event"))
 
 @app.route("/add_event", methods=["GET", "POST"])
 def add_event():
@@ -172,14 +199,16 @@ def add_event():
     if request.method == "POST":
         event_name = request.form.get("eventName")
         organizer = request.form.get("organizer")
-        date = request.form.get("date")
-        time = request.form.get("time")
+        date = request.form.get('date')
+        time = request.form.get('time')
         point_of_contact = request.form.get("pointOfContact")
         location = request.form.get("location")
         description = request.form.get("description")
-        capacity = request.form.get("capacity")
+        capacity = int(request.form.get("capacity"))
+
         new_event = {
             "eventName": event_name,
+            "created_at": datetime.now(),
             "organizer": organizer,
             "date": date,
             "time": time,
@@ -196,8 +225,6 @@ def add_event():
         db.users.update_one({"_id": ObjectId(id)}, {"$set": {"myPostings": user_postings}})
         return redirect(url_for("event"))
     return render_template("add_event.html",user=user)
-    
-    
 
 
 @app.route("/profile")
@@ -211,13 +238,13 @@ def show_profile():
         myPostings = user["myPostings"]
         myEvents = user["myEvents"]
 
-        print("MY POSTINGS",myPostings)
+        print("MY POSTINGS", myPostings)
         for event in user["myEvents"]:
-            if(event is not None):
+            if event is not None:
                 print(event)
                 event_id = event["_id"]
                 event_details = db.event.find_one({"_id": ObjectId(event_id)})
-                if(event_details is not None):
+                if event_details is not None:
                     event.update(event_details)
                 else:
                     myEvents = [event for event in myEvents if event.get("_id") != ObjectId(event_id)]
@@ -236,7 +263,7 @@ def show_profile():
                 event_id = event["_id"]
                 event_details = db.event.find_one({"_id": ObjectId(event_id)})
                 print("EVENT DETAILS", event_details)
-                if(event_details is not None):
+                if event_details is not None:
                     event.update(event_details)
                 else:
                     myPostings = [event for event in myPostings if event.get("_id") != ObjectId(event_id)]
@@ -252,7 +279,6 @@ def show_profile():
         return render_template("profile.html", user=user)
     else:
         return redirect(url_for("loading"))
-    
 
 
 @app.route("/edit_user_info/<user_id>", methods=["GET", "POST", "PUT"])
@@ -260,7 +286,7 @@ def editUser(user_id):
     print("EDIT USER HELLO")
     if "userid" in session:
         id = session["userid"]
-        
+
         user = db.users.find_one(
             {"_id": ObjectId(id)}
         )  
@@ -271,34 +297,35 @@ def editUser(user_id):
             name = request.form.get("fname")
             email = request.form.get("femail")
             password = request.form.get("fpassword")
-            
-            myquery = {"_id":ObjectId(user.get("_id"))}
-            #print("before doc")
-            doc = {
 
-                "$set":
-                { 
-                    "name": name, 
-                    "email": email, 
-                    "password": password
-                }
-                    
-            }
+            myquery = {"_id": ObjectId(user.get("_id"))}
+            # print("before doc")
+            doc = {"$set": {"name": name, "email": email, "password": password}}
 
-            #print(doc)
-            db.users.update_one(myquery,doc)
+            # print(doc)
+            db.users.update_one(myquery, doc)
 
             return redirect(url_for("show_profile"))
-        
-       
-        return render_template("edit_user.html",user_id=user.get("_id"),user=user)
-        
+
+        return render_template("edit_user.html", user_id=user.get("_id"), user=user)
+
     else:
         return redirect(url_for("loading"))
 
 
-@app.route('/editPosting/<post_id>', methods=["GET", "POST", "PUT"])
+@app.route("/editPosting/<post_id>", methods=["GET", "POST", "PUT"])
 def editPosting(post_id):
+    posting = db.event.find_one({"_id": ObjectId(post_id)})
+    print("POSTING", posting)
+    if request.method == "POST" or request.method == "POST":
+        eventName = request.form.get("eventName")
+        organizer = request.form.get("organizer")
+        date = request.form.get("date")
+        time = request.form.get("time")
+        pointOfContact = request.form.get("pointOfContact")
+        description = request.form.get("description")
+        location = request.form.get("location")
+        numOfPpl = request.form.get("numOfPpl")
     if "userid" in session:
         user = db.users.find_one({"_id":ObjectId(session["userid"])})
         posting = db.event.find_one({"_id":ObjectId(post_id)})
@@ -335,8 +362,7 @@ def editPosting(post_id):
     
     
 
-
-@app.route('/delete/<user_id>/<event_id>')
+@app.route("/delete/<user_id>/<event_id>")
 def delete(user_id, event_id):
    
    if "userid" in session:

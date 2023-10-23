@@ -1,9 +1,19 @@
 {% extends 'base.html' %} {%block content %}
+<header>
+  <div id="myNav" class="overlay">
+     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+     <div class="overlay-content">
+       <a href="/events">Event</a>
+       <a href="/profile">Profile</a>
+       <a href="/add_event"> Create Event</a>
+       <a href="/logout">Log Out</a>
+     </div>
+   </div>
+   <span class = "header-button" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; </span>
+   <h2>Volunteer Hub</h2>
+</header>
 
 <div class="events-container">
-  
- 
- 
   <form action="{{ url_for('event') }}" method="post">
     <input type="text" name="search_query" placeholder="Search..." />
     <select name="search_option">
@@ -16,16 +26,15 @@
     </select>
     <button type="submit" class="search-btn">Search</button>
   </form>
-  
+
   <form action="{{ url_for('add_event') }}" method="get">
     <button class="add-btn">Post Event</button>
   </form>
+
   <section class="event">
     {% for doc in docs %}
     <article class="event-box">
-      <p class="event-name">
-        {{ doc.eventName }}
-      </p>
+      <p class="event-name">{{ doc.eventName }}</p>
       <p class="author">
         <span class="bold-text">Organizer:</span> {{ doc.organizer }}
       </p>
@@ -47,6 +56,16 @@
       <p class="numOfPpl">
         <span class="bold-text">Attendees:</span> {{ doc.numOfPpl }}
       </p>
+      <form action="{{ url_for('rsvp') }}" method="post">
+        <input type="hidden" name="event_id" value="{{doc._id}}" />
+        <button type="submit" class="rsvp-btn">RSVP</button>
+      </form>
+
+      {% if capacity_overload and doc._id == specific_event_id %}
+      <p class="events-error-message">Event has reached capacity.</p>
+      {% elif has_rsvpd and doc._id == specific_event_id%}
+      <p class="events-error-message">You have already RSVPed to this event.</p>
+      {% endif %}
     </article>
     {%endfor%}
   </section>

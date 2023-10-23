@@ -2,10 +2,10 @@
 
 {%block content %}
 
-
+<a href="/" class="go-back-button">Back</a>
+<h2 class="start-app-name">Volunteer Hub</h2>
 
 <div class="box">
-
 
     <form method="post" action="/login" class="form-login">
 
@@ -22,7 +22,7 @@
     </form>
     {% if incorrect_login %}
     <p class="login-error-message">Incorrect username or password. Please try again.</p>
-{% endif %}
+    {% endif %}
 
 </div>
 
