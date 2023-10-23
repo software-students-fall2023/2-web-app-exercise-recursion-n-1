@@ -98,7 +98,6 @@ def processLogin():
         session["email"] = email
         print(session)
         # print(session.get('email', "example@example.com"))
-
         return redirect(url_for("event"))
 
 
@@ -125,7 +124,8 @@ def processRegistration():
         return render_template("register.html", noPasswordMatch=True)
 
     # Create an account in the database
-    newAccount = {"email": email, "name": username, "password": password,"myEvents":[],"myPostings":[]}
+    #newAccount = {"email": email, "name": username, "password": password,"myEvents":[],"myPostings":[]}
+    newAccount = {"email": email, "name": username, "password": password,"myEvents":[{"_id":ObjectId("6535c7779d05c736740705d6")},{"_id": ObjectId("6535b3a3c6a294db15064818")}],"myPostings":[]}
     db.users.insert_one(newAccount)
 
     return render_template("login.html")
@@ -170,24 +170,22 @@ def event():
 def rsvp():
     if "userid" not in session:
         return redirect(url_for("loading"))
-
     id = session["userid"]
     user = db.users.find_one({"_id": ObjectId(id)})
     event_id = request.form.get("event_id")
     events_collection = db["event"]
     event = events_collection.find_one({"_id": ObjectId(event_id)})
+    docs = db["event"].find({}).sort("created_at", -1)
     if event["numOfPpl"] >= event["capacity"]:
-        print("FULL")
-        #display error
+        return render_template("events.html",docs=docs, capacity_overload=True, specific_event_id=ObjectId(event_id))
     elif any(str(e["_id"]) == event_id for e in user.get("myEvents", [])):
          print("already RSVP")
-        #display error
+         return render_template("events.html",docs=docs, has_rsvpd=True, specific_event_id=ObjectId(event_id))
     else:
         events_collection.update_one({"_id": ObjectId(event_id)}, {"$inc": {"numOfPpl": 1}})
         user_events = user.get("myEvents", [])
         user_events.append({"_id": ObjectId(event_id)})
         db.users.update_one({"_id": ObjectId(id)}, {"$set": {"myEvents": user_events}})
-    
     return redirect(url_for("event"))
 
 @app.route("/add_event", methods=["GET", "POST"])

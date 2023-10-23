@@ -2,6 +2,21 @@
 
 {%block content %}
 
+<header>
+    <div id="myNav" class="overlay">
+       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+       <div class="overlay-content">
+         <a href="/events">Event</a>
+         <a href="/profile">Profile</a>
+         <a href="/add_event"> Create Event</a>
+         <a href="/logout">Log Out</a>
+       </div>
+     </div>
+     <span class = "header-button" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; </span>
+     <h2>Volunteer Hub</h2>
+</header>
+  
+  
 <div id="profilePic">
     <img src="https://cdn2.iconfinder.com/data/icons/instagram-outline/19/11-512.png" alt="user1" class="avatar">
     <figcaption>@{{user.name}}</figcaption>
@@ -10,19 +25,17 @@
 <div class="box">
 
     <div class="labels">
-        <h3>Perosnal Info</h3>
+        <h3>Personal Info</h3>
         <a href="{{ url_for('editUser',user_id=user._id)}}" method="GET">
           <button class="editBtn">edit</button>
         </a>
     </div>
     <div id="personalInfo">
        
-        <div class="fields">
-           
-            <p><strong>email</strong> : {{user.email}}</p>
-            <p><strong>username</strong>: {{user.name}}</p>
-            <p><strong>password</strong>: {{user.password}}</p>
-           
+        <div class="user-fields">
+            <p><strong>Email</strong> : {{user.email}}</p>
+            <p><strong>Username</strong>: {{user.name}}</p>
+            <p><strong>Password</strong>: {{user.password}}</p>
         </div>
 
     </div>
@@ -37,7 +50,7 @@
     {% for event in user.myEvents %}
     <div id="personalInfo">
        
-        <div class="fields">
+        <div class="event-fields">
 
            <h3>{{event.eventName}}</h3>
            <p>Organizer: {{event.organizer}}</p>
@@ -49,7 +62,7 @@
            
         </div>
         <a href ="{{url_for('delete',user_id=user._id,event_id=event._id)}}">       
-            <button class="deleteBtn">delete</button>
+            <button class="deleteBtn">Delete</button>
         </a>
     
     </div>
