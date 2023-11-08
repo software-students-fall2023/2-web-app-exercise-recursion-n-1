@@ -27,3 +27,16 @@ To create a forum that allows users to join groups for volunteer activities.
  git clone https://github.com/software-students-fall2023/2-web-app-exercise-recursion-n-1.git
 ```
 
+- Install the virtual environment
+```
+python3 -m venv .venv
+```
+```
+source .venv/bin/activate
+```
+
+- Install the requierments
+```
+pip3 install -r requirements.txt
+```
+
