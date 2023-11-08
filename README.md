@@ -41,8 +41,9 @@ pip3 install -r requirements.txt
 ```
 
 - Set up the .env database
+  - PLEASE SEND US A MESSAGE ON DISCORD WE WILL GIVE IT TO YOU. 
 ```
-Create .env file with the Database API Key. PLEASE SEND US A MESSAGE ON DISCORD WE WILL GIVE IT TO YOU. 
+Create .env file with the Database API Key. 
 ```
 
 - Run the Web App
