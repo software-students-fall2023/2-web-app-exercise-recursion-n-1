@@ -20,3 +20,7 @@ To create a forum that allows users to join groups for volunteer activities.
 
 [Team Recursion(n-1) - Sprint2](https://github.com/orgs/software-students-fall2023/projects/68/views/2)
 
+## How to Run
+
+- 
+
