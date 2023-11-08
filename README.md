@@ -40,6 +40,11 @@ source .venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
+- Set up the .env database
+```
+Create .env file with the Database API Key. PLEASE SEND US A MESSAGE ON DISCORD WE WILL GIVE IT TO YOU. 
+```
+
 - Run the Web App
 ```
 flask run
