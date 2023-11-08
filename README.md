@@ -41,8 +41,7 @@ pip3 install -r requirements.txt
 ```
 
 - Set up the .env database
-  - PLEASE SEND US A MESSAGE ON DISCORD WE WILL GIVE IT TO YOU.
-  - Create .env file with the Database API Key. 
+  - Create .env file with the Database API Key and other important things
 ```
 MONGO_DBNAME=volunteerhub
 MONGO_URI="mongodb+srv://Lemonade:129228Yale@cluster0.zuqadrz.mongodb.net/?retryWrites=true&w=majority"
