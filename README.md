@@ -22,5 +22,8 @@ To create a forum that allows users to join groups for volunteer activities.
 
 ## How to Run
 
-- 
+- Clone the project to your desktop 
+```
+ git clone https://github.com/software-students-fall2023/2-web-app-exercise-recursion-n-1.git
+```
 
