@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{%block content %}
+
+<header>
+    <div id="myNav" class="overlay">
+       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+       <div class="overlay-content">
+         <a href="/events">Event</a>
+         <a href="/profile">Profile</a>
+         <a href="/add_event"> Create Event</a>
+         <a href="/logout">Log Out</a>
+       </div>
+     </div>
+     <span class = "header-button" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; </span>
+     <h2>Volunteer Hub</h2>
+</header>
+  
+  
+<div id="profilePic">
+    <img src="https://cdn2.iconfinder.com/data/icons/instagram-outline/19/11-512.png" alt="user1" class="avatar">
+    <figcaption>@{{user.name}}</figcaption>
+</div>
+
+<div class="box">
+
+    <div class="labels">
+        <h3>Personal Info</h3>
+        <a href="{{ url_for('editUser',user_id=user._id)}}" method="GET">
+          <button class="editBtn">edit</button>
+        </a>
+    </div>
+    <div id="personalInfo">
+       
+        <div class="user-fields">
+            <p><strong>Email</strong> : {{user.email}}</p>
+            <p><strong>Username</strong>: {{user.name}}</p>
+            <p><strong>Password</strong>: {{user.password}}</p>
+        </div>
+
+    </div>
+
+    <div class="labels">
+        <h3>My RSVPed Volunteer Events</h3>
+    </div>
+   
+    {% if user.myEvents|length == 0  %}
+    <p> You have not saved any events! Go browse events and help out the community!</p>
+    {% else %}
+    {% for event in user.myEvents %}
+    <div id="personalInfo">
+       
+        <div class="event-fields">
+
+           <h3>{{event.eventName}}</h3>
+           <p>Organizer: {{event.organizer}}</p>
+           <p>When : {{event.date}}</p>
+           <p> Time : {{event.time}}</p>
+           <p>Location:{{event.location}}</p>
+           <p>Point of Contact: {{event.pointOfContact}}</p>
+           <p>Description: {{event.description}}</p>
+           
+        </div>
+        <a href ="{{url_for('delete',user_id=user._id,event_id=event._id)}}">       
+            <button class="deleteBtn">Delete</button>
+        </a>
+    
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <div class="labels">
+        <h3>My Postings</h3>
+        
+    </div>
+
+    {% if user.myPostings|length == 0  %}
+
+     <p> Have a Volunteer opportunitiy you'd like to share? Add an event!</p>
+
+    {% else %}
+
+    {% for event in user.myPostings %}
+    <div id="personalInfo">
+       
+        <div class="fields">
+           <h3>{{event.eventName}}</h3>
+           <p>Organizer: {{event.organizer}}</p>
+           <p>When : {{event.date}}</p>
+           <p>Time : {{event.time}}</p>
+           <p>Location:{{event.location}}</p>
+           <p>Point of Contact: {{event.pointOfContact}}</p>
+           <p>Description: {{event.description}}</p>
+           <p>Number of RSVPs: {{event.numOfPpl}}</p>
+           
+        </div>
+        <a href="{{url_for('editPosting',post_id=event._id)}}">
+        <button class="editBtn">Edit</button>
+        </a>
+
+        <br/>
+
+        <a href ="{{url_for('delete',user_id=user._id,event_id=event._id)}}">       
+        <button class="deleteBtn">Delete</button>
+        </a>
+
+       
+       
+    </div>
+    {% endfor %}
+
+    {% endif %}
+
+    
+   
+</div>
+
+
+{% endblock %}

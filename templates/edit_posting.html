@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+ {%block content %}
+ <header>
+   <div id="myNav" class="overlay">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <div class="overlay-content">
+        <a href="/events">Event</a>
+        <a href="/profile">Profile</a>
+        <a href="/add_event"> Create Event</a>
+        <a href="/logout">Log Out</a>
+      </div>
+    </div>
+    <span class = "header-button" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+    <h2>Volunteer Hub</h2>
+</header>
+
+ <div class="editing">
+    <form class="edit-post" method="post" action="{{url_for('editPosting',post_id = posting._id)}}">
+     
+      <label for="eventName">Event Name:</label>
+     <input type="text" id="eventName" name="eventName" value="{{posting.eventName}}" >
+        <br/>
+
+     <label for="organizer">Organizer:</label>
+    <input type="text" id="organizer" name="organizer" value="{{posting.organizer}}" >
+    <br/>
+
+     <label for="date">Date:</label>
+     <input type="date" id="date" name="date" value="{{posting.date}}">
+    <br/>
+        
+    <label for="time">Time:</label>
+    <input type="time" id="time" name="time" value="{{posting.time}}" >
+        <br/>
+
+        <label for="pointOfContact">Contact:</label>
+        <input type="email" id="pointOfContact" name="pointOfContact" value="{{posting.pointOfContact}}">
+        <br/>
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" value="{{posting.location}}" >
+        <br/>
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" rows="4"  value="{{posting.description}}" >
+        <br/>
+        <label for="numOfPpl">Capacity</label>
+        <input type="number" id="numOfPpl" name="capacity" value="{{posting.capacity}}" >
+        <br/>
+        <button class="edit-post-btn">Post</button>
+    </form>
+  </div>
+
+
+ {% endblock %}
+
